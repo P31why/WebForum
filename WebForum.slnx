@@ -1,5 +1,6 @@
 <Solution>
-  <Project Path="WebForum.Data/WebForum.Data.csproj" Id="e434a287-de55-4d3b-8127-0926417cccda" />
+  <Project Path="WebForum.Core/WebForum.Core.csproj" Id="d02cafd2-29b2-4665-afa4-a54d808023e0" />
+  <Project Path="WebForum.Data/WebForum.Infrastructure.csproj" Id="e434a287-de55-4d3b-8127-0926417cccda" />
   <Project Path="WebForum.Mapper/WebForum.Mapper.csproj" Id="1eb2a2f3-2cb0-4aa1-927a-8ac1b387dadb" />
   <Project Path="WebForum/WebForum.WebApi.csproj" />
 </Solution>
