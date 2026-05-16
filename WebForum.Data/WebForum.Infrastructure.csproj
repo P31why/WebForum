@@ -20,4 +20,8 @@
     <Folder Include="Repository\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebForum.Core\WebForum.Core.csproj" />
+  </ItemGroup>
+
 </Project>
