@@ -1,8 +1,14 @@
 ﻿namespace WebForum.Core
 {
-    public enum UserGetInfo
+    public enum UserModelType
     {
         Full,
         Short,
+    }
+
+    public enum DeleteType
+    {
+        NoVisible,
+        Full
     }
 }
