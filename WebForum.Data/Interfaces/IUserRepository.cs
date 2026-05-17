@@ -1,5 +1,6 @@
 ﻿
 using WebForum.Core;
+using WebForum.Core.Models;
 using WebForum.Data.Entities;
 
 namespace WebForum.Infrastructure.Interfaces
@@ -8,10 +9,18 @@ namespace WebForum.Infrastructure.Interfaces
     {
         Task CreatUserEntityAsync(User entity);
         
-        Task GetAllUsersAsync(Guid userId, UserModelType type);
+        Task<UserDto> GetUserAsync(Guid userId);
+
+        Task<UserShortDto> GetUserShortAsync(Guid userId);
+
+        Task<IEnumerable<UserDto>>? GetUsersCollectionAsync();
+        
+        Task<IEnumerable<UserShortDto>> GetUsersShortCollectionAsync();
         
         Task UpdateUserEntityAsync(Guid userId, UserModelType type);
 
         Task DeleteUserEntityAsync(Guid userId, DeleteType type);
+
+        Task CommitTableUserAsync();
     }
 }
