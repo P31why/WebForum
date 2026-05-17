@@ -1,16 +1,17 @@
 ﻿
 using WebForum.Core;
+using WebForum.Data.Entities;
 
 namespace WebForum.Infrastructure.Interfaces
 {
-    public interface IUserRepository<TKey>
+    public interface IUserRepository
     {
-        Task CreatUserEntityAsync();
+        Task CreatUserEntityAsync(User entity);
         
-        Task GetAllUsersAsync(TKey userId, UserGetInfo type);
+        Task GetAllUsersAsync(Guid userId, UserModelType type);
         
-        Task UpdateUserEntityAsync();
+        Task UpdateUserEntityAsync(Guid userId, UserModelType type);
 
-        Task DeleteUserEntityAsync(TKey userId);
+        Task DeleteUserEntityAsync(Guid userId, DeleteType type);
     }
 }
