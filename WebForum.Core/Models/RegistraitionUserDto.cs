@@ -1,7 +1,7 @@
 ﻿
 namespace WebForum.Core.Models
 {
-    public class RegistraitionUserModel
+    public class RegistraitionUserDto
     {
         public required string UserName { get; set; }
 
