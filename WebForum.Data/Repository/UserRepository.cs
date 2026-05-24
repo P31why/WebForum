@@ -37,9 +37,9 @@ namespace WebForum.Infrastructure.Repository
                 .Select(u => new UserDto
                 {
                     Id = u.Id,
-                    UserName = u.Username,
+                    UserName = u.UserName,
                     Email = u.Email
-                }).FirstOrDefaultAsync();
+                }).AsNoTracking().FirstOrDefaultAsync();
 
             if (user != null)
                 throw new Exception("User is not exist");
@@ -53,9 +53,9 @@ namespace WebForum.Infrastructure.Repository
                 .Select(u => new UserDto 
                 {
                     Id = u.Id,
-                    UserName = u.Username,
+                    UserName = u.UserName,
                     Email = u.Email
-                }).ToArrayAsync();
+                }).AsNoTracking().ToArrayAsync();
         }
 
         public async Task<UserShortDto> GetUserShortAsync(Guid userId)
@@ -65,8 +65,8 @@ namespace WebForum.Infrastructure.Repository
                 .Select(u => new UserShortDto
                 {
                     Id = u.Id,
-                    UserName = u.Username
-                }).FirstOrDefaultAsync();
+                    UserName = u.UserName
+                }).AsNoTracking().FirstOrDefaultAsync();
 
             if (user != null)
                 throw new Exception("User is not exist");
@@ -80,13 +80,24 @@ namespace WebForum.Infrastructure.Repository
                 .Select(u => new UserShortDto
                 {
                     Id = u.Id,
-                    UserName = u.Username
-                }).ToArrayAsync();
+                    UserName = u.UserName
+                }).AsNoTracking().ToArrayAsync();
         }
 
-        public Task UpdateUserEntityAsync(Guid userId, UserModelType type)
+        public async Task UpdateUserEntityAsync(UserDto userDto, UserModelType type)
         {
-            throw new NotImplementedException();
+            await dbContext.Users.ExecuteUpdateAsync(set =>
+            {
+                if (userDto.UserName != null)
+                    set.SetProperty(u => u.UserName, userDto.UserName);
+                if (userDto.Email != null)
+                    set.SetProperty(e => e.Email, userDto.Email);
+            });
+        }
+
+        public async Task UpdateUserPasswordAsync(Guid userId, string hash)
+        {
+            await dbContext.Users.ExecuteUpdateAsync(u => u.SetProperty(h => h.PasswordHash, hash));
         }
 
         
