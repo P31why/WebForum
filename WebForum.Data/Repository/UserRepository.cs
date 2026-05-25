@@ -75,13 +75,15 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task UpdateUserEntityAsync(UserDto userDto, UserModelType type)
         {
-            await dbContext.Users.ExecuteUpdateAsync(set =>
-            {
-                if (userDto.UserName != null)
-                    set.SetProperty(u => u.UserName, userDto.UserName);
-                if (userDto.Email != null)
-                    set.SetProperty(e => e.Email, userDto.Email);
-            });
+            await dbContext.Users
+                .Where(i => i.Id == userDto.Id)
+                .ExecuteUpdateAsync(set =>
+                {
+                    if (userDto.UserName != null)
+                        set.SetProperty(u => u.UserName, userDto.UserName);
+                    if (userDto.Email != null)
+                        set.SetProperty(e => e.Email, userDto.Email);
+                });
         }
 
         public async Task UpdateUserPasswordAsync(Guid userId, string hash)
