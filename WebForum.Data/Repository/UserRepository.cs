@@ -58,7 +58,7 @@ namespace WebForum.Infrastructure.Repository
                 }).AsNoTracking().FirstOrDefaultAsync();
 
             if (user == null)
-                throw new Exception("User is not exist");
+                throw new Exception("This user does not exist");
 
             return user;
         }
