@@ -30,7 +30,7 @@ namespace WebForum.Infrastructure.Repository
                     Email = u.Email
                 }).AsNoTracking().FirstOrDefaultAsync();
 
-            if (user != null)
+            if (user == null)
                 throw new Exception("User is not exist");
 
             return user;
@@ -57,7 +57,7 @@ namespace WebForum.Infrastructure.Repository
                     UserName = u.UserName
                 }).AsNoTracking().FirstOrDefaultAsync();
 
-            if (user != null)
+            if (user == null)
                 throw new Exception("User is not exist");
 
             return user;
