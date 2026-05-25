@@ -13,24 +13,26 @@ namespace WebForum.Infrastructure.Repository
         {
             if(userId == null)
             {
-                return await dbContext.Topics.Select(i => new TopicDto
-                                             {
-                                                 Id = i.Id,
-                                                 UserId = i.UserId,
-                                                 Title = i.Title,
-                                                 Description = i.Description
-                                             }).AsNoTracking().ToListAsync();
+                return await dbContext.Topics
+                    .Select(i => new TopicDto
+                    {
+                        Id = i.Id,
+                        UserId = i.UserId,
+                        Title = i.Title,
+                        Description = i.Description
+                    }).AsNoTracking().ToListAsync();
             }
             else
             {
-                return await dbContext.Topics.Where(t => t.UserId == userId)
-                                             .Select(i => new TopicDto
-                                             {
-                                                 Id = i.Id,
-                                                 UserId = i.UserId,
-                                                 Title = i.Title,
-                                                 Description = i.Description
-                                             }).AsNoTracking() .ToListAsync();
+                return await dbContext.Topics
+                    .Where(t => t.UserId == userId)
+                    .Select(i => new TopicDto
+                    {
+                        Id = i.Id,
+                        UserId = i.UserId,
+                        Title = i.Title,
+                        Description = i.Description
+                    }).AsNoTracking().ToListAsync();
 
             }
         }
@@ -39,37 +41,71 @@ namespace WebForum.Infrastructure.Repository
         {
             if (userId == null)
             {
-                return await dbContext.Topics.Select(i => new TopicShortDto
-                                             {
-                                                 Id = i.Id,
-                                                 Title = i.Title,
-                                             }).AsNoTracking().ToListAsync();
+                return await dbContext.Topics
+                    .Select(i => new TopicShortDto
+                    {
+                        Id = i.Id,
+                        Title = i.Title,
+                    }).AsNoTracking().ToListAsync();
             }
             else
             {
-                return await dbContext.Topics.Where(t => t.UserId == userId)
-                                             .Select(i => new TopicShortDto
-                                             {
-                                                 Id = i.Id,
-                                                 Title = i.Title,
-                                             }).AsNoTracking().ToListAsync();
-
+                return await dbContext.Topics
+                    .Where(t => t.UserId == userId)
+                    .Select(i => new TopicShortDto
+                    {
+                        Id = i.Id,
+                        Title = i.Title,
+                    }).AsNoTracking().ToListAsync();
             }
         }
 
-        public Task<TopicDto> GetDtoAsync(Guid topicId)
+        public async Task<TopicDto> GetDtoAsync(Guid topicId)
         {
-            throw new NotImplementedException();
+            var topic = await dbContext.Topics
+                .Where(t => t.Id == topicId)
+                .Select(i => new TopicDto
+                {
+                    Id = i.Id,
+                    UserId = i.UserId,
+                    Title = i.Title,
+                    Description = i.Description
+                }).AsNoTracking().FirstOrDefaultAsync();
+
+            if (topic == null)
+                throw new Exception("This topic does not exist");
+
+            return topic;
         }
 
-        public Task<TopicShortDto> GetShortDtoAsync(Guid topicId)
+        public async Task<TopicShortDto> GetShortDtoAsync(Guid topicId)
         {
-            throw new NotImplementedException();
+            var topic = await dbContext.Topics
+                .Where(t => t.Id == topicId)
+                .Select(i => new TopicShortDto
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                }).AsNoTracking().FirstOrDefaultAsync();
+
+            if (topic == null)
+                throw new Exception("This topic does not exist");
+
+            return topic;
         }
 
         public Task UpdateEntityAsync(TopicDto topicDto)
         {
-            throw new NotImplementedException();
+            return dbContext.Topics
+                .Where(t => t.Id == topicDto.Id)
+                .ExecuteUpdateAsync(set =>
+                {
+                    if (topicDto.Title != null)
+                        set.SetProperty(i => i.Title, topicDto.Title);
+
+                    if (topicDto.Description != null)
+                        set.SetProperty(i => i.Description, topicDto.Description);
+                });
         }
     }
 }
