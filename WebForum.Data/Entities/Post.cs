@@ -1,12 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WebForum.Data.Entities;
 
 namespace WebForum.Infrastructure.Entities
 {
-    public class Post
+    public class Post : IId<Guid>
     {
-        public Guid Id = Guid.NewGuid();
-
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
+        
+        [Required]
         public Guid TopicId { get; set; }
 
         [ForeignKey("TopicId")]
