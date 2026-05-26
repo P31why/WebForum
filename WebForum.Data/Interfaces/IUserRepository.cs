@@ -13,7 +13,7 @@ namespace WebForum.Infrastructure.Interfaces
 
         Task<IEnumerable<UserDto>>? GetCollectionDtoAsync();
         
-        Task<IEnumerable<UserShortDto>>? GetCollectionDtoShortAsync();
+        Task<IEnumerable<UserShortDto>>? GetCollectionShortDtoAsync();
         
         Task UpdateUserEntityAsync(UserDto userDto, UserModelType type);
 

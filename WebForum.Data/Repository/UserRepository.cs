@@ -63,7 +63,7 @@ namespace WebForum.Infrastructure.Repository
             return user;
         }
 
-        public async Task<IEnumerable<UserShortDto>>? GetCollectionDtoShortAsync()
+        public async Task<IEnumerable<UserShortDto>>? GetCollectionShortDtoAsync()
         {
             return await dbContext.Users
                 .Select(u => new UserShortDto

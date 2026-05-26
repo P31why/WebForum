@@ -13,6 +13,6 @@ namespace WebForum.Infrastructure.Interfaces
 
         public Task<IReadOnlyCollection<TopicDto>> GetCollectionDtoAsync(Guid? userId);
 
-        public Task<IReadOnlyCollection<TopicShortDto>> GetCollectionDtoShortAsync(Guid? userId);
+        public Task<IReadOnlyCollection<TopicShortDto>> GetCollectionShortDtoAsync(Guid? userId);
     }
 }

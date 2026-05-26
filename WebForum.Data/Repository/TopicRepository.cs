@@ -37,7 +37,7 @@ namespace WebForum.Infrastructure.Repository
             }
         }
 
-        public async Task<IReadOnlyCollection<TopicShortDto>> GetCollectionDtoShortAsync(Guid? userId)
+        public async Task<IReadOnlyCollection<TopicShortDto>> GetCollectionShortDtoAsync(Guid? userId)
         {
             if (userId == null)
             {
