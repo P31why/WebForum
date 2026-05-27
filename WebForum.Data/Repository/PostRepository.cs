@@ -9,26 +9,44 @@ namespace WebForum.Infrastructure.Repository
 {
     public class PostRepository(AppDbContext dbContext) : BaseRepository<Guid, Post>(dbContext), IPostRepository
     {
-        public Task<IReadOnlyList<PostDto>> GetCollectionDtoAsync(Guid? userId)
+        public async Task<IReadOnlyCollection<PostDto>>? GetCollectionDtoAsync(Guid? userId)
         {
-            return dbContext.Post
+            return await dbContext.Post
                 .Where(p => p.UserId == userId)
                 .Select(i => new PostDto
                 {
                     Id = i.Id,
+                    UserId = i.UserId,
                     TopicId = i.TopicId,
-
+                    Title = i.Title,
+                    CreationDate = i.CreationDate,
+                    Text = i.Text,
                 })
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public Task<IReadOnlyList<PostShortDto>> GetCollectionShortDtoAsync(Guid? userId)
+        public async Task<IReadOnlyCollection<PostShortDto>>? GetCollectionShortDtoAsync(Guid? userId)
         {
-            throw new NotImplementedException();
+            return await dbContext.Post
+                .Where(p => p.UserId == userId)
+                .Select(i => new PostShortDto
+                {
+                    Id = i.Id,
+                    UserId = i.UserId,
+                    TopicId = i.TopicId,
+                    Title = i.Title,
+                    CreationDate = i.CreationDate
+                })
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public Task<PostDto> GetDtoAsync(Guid postId)
+        public async Task<PostDto> GetDtoAsync(Guid postId)
         {
-            throw new NotImplementedException();
+            var post = dbContext.Post.Where(Guid)
+
+            return 
         }
 
         public Task<PostShortDto> GetShortDtoAsync(Guid postId)
