@@ -42,21 +42,70 @@ namespace WebForum.Infrastructure.Repository
                 .ToListAsync();
         }
 
-        public async Task<PostDto> GetDtoAsync(Guid postId)
+        public async Task<PostDto>? GetDtoAsync(Guid postId)
         {
-            var post = dbContext.Post.Where(Guid)
+            var post = await dbContext.Post
+                .Where(p => p.Id == postId)
+                .Select(i => new PostDto
+                {
+                    Id= i.Id,
+                    Text = i.Text,
+                    Title = i.Title,
+                    TopicId = i.TopicId,
+                    CreationDate = i.CreationDate,
+                    UserId = i.UserId
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+            
+            if (post == null)
+                throw new Exception("Post is not exist");
 
-            return 
+            return post;
         }
 
-        public Task<PostShortDto> GetShortDtoAsync(Guid postId)
+        public async Task<PostShortDto>? GetShortDtoAsync(Guid postId)
         {
-            throw new NotImplementedException();
+            var post = await dbContext.Post
+                .Where(p => p.Id == postId)
+                .Select(i => new PostShortDto
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    TopicId = i.TopicId,
+                    CreationDate = i.CreationDate,
+                    UserId = i.UserId
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            if (post == null)
+                throw new Exception("Post is not exist");
+
+            return post;
         }
 
-        public Task UpdateEntityAsync(PostDto postDto)
+        public async Task<bool> UpdateEntityAsync(PostDto postDto)
         {
-            throw new NotImplementedException();
+            bool isChanged = false;
+            await dbContext.Post
+                .Where(p => p.Id == postDto.Id)
+                .ExecuteUpdateAsync(set =>
+                {
+                    if (postDto.Title != null)
+                    {
+                        set.SetProperty(p => p.Title, postDto.Title);
+                        isChanged = true;
+                    }
+
+                    if (postDto.Text != null)
+                    {
+                        set.SetProperty(p => p.Text, postDto.Text);
+                        isChanged = true;
+                    }
+                });
+
+            return isChanged;
         }
     }
 }
