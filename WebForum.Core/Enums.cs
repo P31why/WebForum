@@ -6,6 +6,12 @@
         Short,
     }
 
+    public enum IdType
+    {
+        User = 1,
+        entity = 2,
+    }
+
     public enum DeleteType
     {
         NoVisible,
