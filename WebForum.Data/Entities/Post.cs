@@ -6,26 +6,25 @@ namespace WebForum.Infrastructure.Entities
 {
     public class Post : IId<Guid>
     {
-        [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
         
         [Required]
         public Guid TopicId { get; set; }
 
-        [ForeignKey("TopicId")]
-        public Topic Topic { get; set; }
+        [ForeignKey(nameof(TopicId))]
+        public required Topic Topic { get; set; }
 
         public Guid UserId { get; set; }
 
-        [ForeignKey("TopicId")]
-        public User User { get; set; } 
+        [ForeignKey(nameof(UserId))]
+        public required User User { get; set; } 
 
         public required string Title { get; set; }
         
         public string? Text { get; set; }
 
-        public DateTime CreationDate { get; init; } = DateTime.Now;
+        public required bool IsDeleted { get; set; }
 
-        public List<Comment> Comments { get; set; } = [];
+        public DateTime CreationDate { get; init; } = DateTime.Now;
     }
 }
