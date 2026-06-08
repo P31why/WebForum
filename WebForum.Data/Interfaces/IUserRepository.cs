@@ -5,7 +5,7 @@ using WebForum.Data.Entities;
 
 namespace WebForum.Infrastructure.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : IBaseRepository<Guid, User>
     {        
         Task<UserDto> GetDtoAsync(Guid userId);
 

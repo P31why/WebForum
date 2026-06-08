@@ -1,10 +1,11 @@
 ﻿
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Infrastructure.Entities;
 
 namespace WebForum.Infrastructure.Interfaces
 {
-    public interface ICommentRepository
+    public interface ICommentRepository : IBaseRepository<long, Comment>
     {
         public Task<bool> UpdateEntityAsync(CommentDto commentDto);
 

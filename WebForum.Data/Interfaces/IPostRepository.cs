@@ -1,8 +1,9 @@
 ﻿using WebForum.Core.Models;
+using WebForum.Infrastructure.Entities;
 
 namespace WebForum.Infrastructure.Interfaces
 {
-    public interface IPostRepository
+    public interface IPostRepository : IBaseRepository<Guid,Post>
     {
         public Task<bool> UpdateEntityAsync(PostDto postDto);
 

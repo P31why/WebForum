@@ -1,9 +1,10 @@
 ﻿
 using WebForum.Core.Models;
+using WebForum.Infrastructure.Entities;
 
 namespace WebForum.Infrastructure.Interfaces
 {
-    public interface ITopicRepository
+    public interface ITopicRepository : IBaseRepository<Guid, Topic>
     {
         public Task UpdateEntityAsync(TopicDto topicDto);
 
