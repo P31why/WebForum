@@ -7,7 +7,7 @@ namespace WebForum.Infrastructure.Interfaces
     {
         public Task CreateEntityAsync(TEntity entity);
 
-        public Task CommitDbAsync();
+        public Task<bool> CommitDbAsync();
 
         public Task DeleteEntityAsync(Tkey tkey, DeleteType type);
     }

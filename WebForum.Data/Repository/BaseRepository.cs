@@ -6,26 +6,34 @@ using WebForum.Infrastructure.Interfaces;
 
 namespace WebForum.Infrastructure.Repository
 {
-    public class BaseRepository<TKey, TEntity> (AppDbContext dbContext): IBaseRepository<TKey, TEntity> where TEntity : class
+    public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> where TEntity : class
     {
+        protected readonly AppDbContext _dbContext;
+        protected readonly DbSet<TEntity> _dbSet;
 
-        private readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
+        public BaseRepository(AppDbContext dbContext) 
+        {
+            _dbContext = dbContext;
+            _dbSet = dbContext.Set<TEntity>();
+        }
 
         public async Task CreateEntityAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
         }
 
-        public async Task CommitDbAsync()
+        public async Task<bool> CommitDbAsync()
         {
-            await dbContext.SaveChangesAsync();
+            int rowsAffected = await _dbContext.SaveChangesAsync();
+
+            return rowsAffected > 0;
         }
 
         public virtual async Task DeleteEntityAsync(TKey tkey, DeleteType type)
         {
 
             if (type == DeleteType.NoVisible)
-                await _dbSet.Where(e => EF.Property<TKey>(e, "Id").Equals(tkey))
+                await _dbSet.Where(e => EqualityComparer<TKey>.Default.Equals(EF.Property<TKey>(e,"Id"),tkey))
                                                               .ExecuteDeleteAsync();
 
         }
