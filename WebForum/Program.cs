@@ -1,5 +1,6 @@
 
 using Scalar.AspNetCore;
+using WebForum.WebApi;
 
 namespace WebForum
 {
@@ -10,6 +11,7 @@ namespace WebForum
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            ServiceCollectionExtension.ConfigureOptions(builder.Services, builder.Configuration);
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -28,8 +30,8 @@ namespace WebForum
 
             app.UseAuthorization();
 
-
-            app.MapControllers();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.Run();
         }
