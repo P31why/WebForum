@@ -12,7 +12,7 @@ namespace WebForum.Core.Models
     {
         public Guid Id { get; init; }
 
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
     }
 }
