@@ -11,12 +11,17 @@ namespace WebForum.Infrastructure
     {
         public AppDbContext CreateDbContext(string[] args)
         {
+            string configPath = Path.Combine(Directory.GetCurrentDirectory(),"..", "WebForum");
+
             IConfiguration configuration = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "", "WebForum.Api"))
-                .AddJsonFile("appsettings.json")
+                .SetBasePath(configPath)
+                .AddJsonFile("appsettings.Development.json")
                 .Build();
+
             var builder = new DbContextOptionsBuilder<AppDbContext>();
+
             builder.UseSqlServer(configuration.GetConnectionString("SqlServer"));
+            
             return new AppDbContext(builder.Options);
         }
     }
