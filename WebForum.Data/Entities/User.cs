@@ -16,7 +16,7 @@ namespace WebForum.Data.Entities
         
         public string PasswordHash { get; set; } = string.Empty;
 
-        public bool IsDeleted { get; set; }
+        public required bool IsDeleted { get; set; }
         
         public DateTime CreationDate { get; init; } = DateTime.Now;
     }
