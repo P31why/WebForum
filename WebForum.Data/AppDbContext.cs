@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebForum.Data.Entities;
+using WebForum.Infrastructure.Configurations;
 using WebForum.Infrastructure.Entities;
 
 namespace WebForum.Data
@@ -15,5 +16,16 @@ namespace WebForum.Data
         public DbSet<Comment> Comment { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options){}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new PostConfiguration());
+
+            modelBuilder.ApplyConfiguration(new TopicConfiguration());
+
+            modelBuilder.ApplyConfiguration(new CommentConfiguration());
+
+            modelBuilder.ApplyConfiguration(new FollowedTopicConfiguration());
+        }
     }
 }
