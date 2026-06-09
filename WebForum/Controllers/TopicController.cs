@@ -6,6 +6,12 @@ namespace WebForum.WebApi.Controllers
 {
     public class TopicController(ITopicService service) : BaseController
     {
+        [HttpPost("AddAsync")]
+        public async Task<TopicDto> AddAsync(TopicDto topic)
+        {
+            return await service.AddAsync(topic);
+        }
+
         [HttpGet("GetAllFollowedAsync")]
         public async Task<IReadOnlyCollection<FollowedTopicDto>> GetAllFollowedAsync(Guid userId)
         {
