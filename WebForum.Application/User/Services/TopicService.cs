@@ -6,6 +6,11 @@ namespace WebForum.Application.User.Services
 {
     public class TopicService(ITopicRepository topicRepository, IFollowedTopicRepository followedTopicRepository) : ITopicService
     {
+        public Task<TopicDto> AddAsync(TopicDto topicDto)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IReadOnlyCollection<FollowedTopicDto>> GetAllFollowedTopicsAsync(Guid userId)
         {
             return (await followedTopicRepository.GetAllAsync(userId)) ?? Array.Empty<FollowedTopicDto>();
