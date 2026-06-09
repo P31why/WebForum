@@ -3,12 +3,12 @@ using WebForum.Core;
 
 namespace WebForum.Infrastructure.Interfaces
 {
-    public interface IBaseRepository<Tkey, TEntity> where TEntity : class
+    public interface IBaseRepository<TKey, TEntity> where TEntity : class, IId<TKey>
     {
-        public Task CreateEntityAsync(TEntity entity);
+        public Task<TEntity> CreateEntityAsync(TEntity entity);
 
         public Task<bool> CommitDbAsync();
 
-        public Task DeleteEntityAsync(Tkey tkey, DeleteType type);
+        public Task DeleteEntityAsync(TKey tkey, DeleteType type);
     }
 }

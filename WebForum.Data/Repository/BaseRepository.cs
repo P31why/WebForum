@@ -6,7 +6,7 @@ using WebForum.Infrastructure.Interfaces;
 
 namespace WebForum.Infrastructure.Repository
 {
-    public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> where TEntity : class
+    public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> where TEntity : class, IId<TKey>
     {
         protected readonly AppDbContext _dbContext;
         protected readonly DbSet<TEntity> _dbSet;
@@ -17,9 +17,11 @@ namespace WebForum.Infrastructure.Repository
             _dbSet = dbContext.Set<TEntity>();
         }
 
-        public async Task CreateEntityAsync(TEntity entity)
+        public async Task<TEntity> CreateEntityAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
+
+            return entity;
         }
 
         public async Task<bool> CommitDbAsync()
