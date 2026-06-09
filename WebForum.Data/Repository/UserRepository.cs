@@ -13,7 +13,7 @@ namespace WebForum.Infrastructure.Repository
         public override async Task DeleteEntityAsync(Guid userId, DeleteType type)
         {
             if (DeleteType.NoVisible == type)
-                await dbContext.Users.Where(u => u.Id == userId)
+                await _dbSet.Where(u => u.Id == userId)
                     .ExecuteUpdateAsync(q => q.SetProperty(u => u.IsDeleted,true));
             else
                  await base.DeleteEntityAsync(userId, type);
@@ -21,7 +21,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<UserDto> GetDtoAsync(Guid userId)
         {
-            var user = await dbContext.Users
+            var user = await _dbSet
                 .Where(u => u.Id == userId)
                 .Select(u => new UserDto
                 {
@@ -38,7 +38,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<IEnumerable<UserDto>>? GetCollectionDtoAsync()
         {
-            return await dbContext.Users
+            return await _dbSet
                 .Select(u => new UserDto 
                 {
                     Id = u.Id,
@@ -49,7 +49,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<UserShortDto> GetShortDtoAsync(Guid userId)
         {
-            var user = await dbContext.Users
+            var user = await _dbSet
                 .Where(u => u.Id == userId)
                 .Select(u => new UserShortDto
                 {
@@ -65,7 +65,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<IEnumerable<UserShortDto>>? GetCollectionShortDtoAsync()
         {
-            return await dbContext.Users
+            return await _dbSet
                 .Select(u => new UserShortDto
                 {
                     Id = u.Id,
@@ -75,7 +75,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task UpdateUserEntityAsync(UserDto userDto, UserModelType type)
         {
-            await dbContext.Users
+            await _dbSet
                 .Where(i => i.Id == userDto.Id)
                 .ExecuteUpdateAsync(set =>
                 {
@@ -88,7 +88,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task UpdateUserPasswordAsync(Guid userId, string hash)
         {
-            await dbContext.Users.Where(u => u.Id == userId)
+            await _dbSet.Where(u => u.Id == userId)
                 .ExecuteUpdateAsync(u => u.SetProperty(h => h.PasswordHash, hash));
         }
 

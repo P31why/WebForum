@@ -1,5 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
+using WebForum.Core;
 using WebForum.Core.Models;
 using WebForum.Data;
 using WebForum.Infrastructure.Entities;
@@ -11,7 +13,7 @@ namespace WebForum.Infrastructure.Repository
     {
         public async Task<IReadOnlyCollection<PostDto>>? GetCollectionDtoAsync(Guid? userId)
         {
-            return await dbContext.Post
+            return await _dbSet
                 .Where(p => p.UserId == userId)
                 .Select(i => new PostDto
                 {
@@ -28,7 +30,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<IReadOnlyCollection<PostShortDto>>? GetCollectionShortDtoAsync(Guid? userId)
         {
-            return await dbContext.Post
+            return await _dbSet
                 .Where(p => p.UserId == userId)
                 .Select(i => new PostShortDto
                 {
@@ -44,7 +46,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<PostDto>? GetDtoAsync(Guid postId)
         {
-            var post = await dbContext.Post
+            var post = await _dbSet
                 .Where(p => p.Id == postId)
                 .Select(i => new PostDto
                 {
@@ -66,7 +68,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<PostShortDto>? GetShortDtoAsync(Guid postId)
         {
-            var post = await dbContext.Post
+            var post = await _dbSet
                 .Where(p => p.Id == postId)
                 .Select(i => new PostShortDto
                 {
@@ -88,7 +90,7 @@ namespace WebForum.Infrastructure.Repository
         public async Task<bool> UpdateEntityAsync(PostDto postDto)
         {
             bool isChanged = false;
-            await dbContext.Post
+            await _dbSet
                 .Where(p => p.Id == postDto.Id)
                 .ExecuteUpdateAsync(set =>
                 {
@@ -106,6 +108,15 @@ namespace WebForum.Infrastructure.Repository
                 });
 
             return isChanged;
+        }
+
+        public override async Task DeleteEntityAsync(Guid tkey, DeleteType type)
+        {
+            if (DeleteType.NoVisible == type)
+                await _dbSet.Where(p => p.Id == tkey)
+                    .ExecuteUpdateAsync(set => set.SetProperty(i => i.IsDeleted, true));
+            else
+                await base.DeleteEntityAsync(tkey, type);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace WebForum.Infrastructure.Repository
         {
             if(userId == null)
             {
-                return await dbContext.Topics
+                return await _dbSet
                     .Select(i => new TopicDto
                     {
                         Id = i.Id,
@@ -24,7 +24,7 @@ namespace WebForum.Infrastructure.Repository
             }
             else
             {
-                return await dbContext.Topics
+                return await _dbSet
                     .Where(t => t.UserId == userId)
                     .Select(i => new TopicDto
                     {
@@ -41,7 +41,7 @@ namespace WebForum.Infrastructure.Repository
         {
             if (userId == null)
             {
-                return await dbContext.Topics
+                return await _dbSet
                     .Select(i => new TopicShortDto
                     {
                         Id = i.Id,
@@ -50,7 +50,7 @@ namespace WebForum.Infrastructure.Repository
             }
             else
             {
-                return await dbContext.Topics
+                return await _dbSet
                     .Where(t => t.UserId == userId)
                     .Select(i => new TopicShortDto
                     {
@@ -62,7 +62,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<TopicDto> GetDtoAsync(Guid topicId)
         {
-            var topic = await dbContext.Topics
+            var topic = await _dbSet
                 .Where(t => t.Id == topicId)
                 .Select(i => new TopicDto
                 {
@@ -80,7 +80,7 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<TopicShortDto> GetShortDtoAsync(Guid topicId)
         {
-            var topic = await dbContext.Topics
+            var topic = await _dbSet
                 .Where(t => t.Id == topicId)
                 .Select(i => new TopicShortDto
                 {
@@ -96,7 +96,7 @@ namespace WebForum.Infrastructure.Repository
 
         public Task UpdateEntityAsync(TopicDto topicDto)
         {
-            return dbContext.Topics
+            return _dbSet
                 .Where(t => t.Id == topicDto.Id)
                 .ExecuteUpdateAsync(set =>
                 {

@@ -15,7 +15,7 @@ namespace WebForum.Infrastructure.Repository
             IReadOnlyCollection<CommentDto> comments;
             if (IdType.User == type)
             {
-                comments = await dbContext.Comment
+                comments = await _dbSet
                     .Where(c => c.UserId == Id)
                     .Select(i => new CommentDto
                     {
@@ -30,7 +30,7 @@ namespace WebForum.Infrastructure.Repository
             }
             else
             {
-                comments = await dbContext.Comment
+                comments = await _dbSet
                     .Where(c => c.PostId == Id)
                     .Select(i => new CommentDto
                     {
@@ -68,7 +68,7 @@ namespace WebForum.Infrastructure.Repository
         {
             bool isChanged = false;
             
-            await dbContext.Comment
+            await _dbSet
                 .Where(c => c.Id == commentDto.Id && c.PostId == commentDto.PostId)
                 .ExecuteUpdateAsync(set =>
                 {
