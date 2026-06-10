@@ -8,20 +8,38 @@ namespace WebForum.Mapper
     [Mapper]
     public partial class PostMapper
     {
-       /* public partial Post ModelToEntity(PostDto dto)
+        [UserMapping]
+        public Post ModelToEntityCreate(PostDto dto)
         {
             return new Post
             {
-                Id = dto.Id,
-
                 TopicId = dto.TopicId,
 
                 UserId = dto.UserId,
 
                 Title = dto.Title,
 
+                Text = dto.Text,
 
+                IsDeleted = false
             };
-        }*/
+        }
+
+        [UserMapping]
+        public PostDto EntityToModel(Post entity)
+        {
+            return new PostDto
+            {
+                TopicId = entity.TopicId,
+
+                UserId = entity.UserId,
+
+                Title = entity.Title,
+
+                Text = entity.Text,
+
+                IsDeleted = entity.IsDeleted,
+            };
+        }
     }
 }
