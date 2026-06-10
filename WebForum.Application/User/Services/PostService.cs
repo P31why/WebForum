@@ -3,15 +3,22 @@ using WebForum.Application.User.Interfaces;
 using WebForum.Core;
 using WebForum.Core.Models;
 using WebForum.Infrastructure.Interfaces;
+using WebForum.Mapper;
 
 namespace WebForum.Application.User.Services
 {
-    public class PostService(IPostRepository repository) : IPostService
+    public class PostService(IPostRepository repository, PostMapper mapper) : IPostService
     {
-        public Task<PostDto> AddPostAsync(PostDto postDto)
+        public async Task<PostDto> AddPostAsync(PostDto postDto)
         {
-            //repository.CreateEntityAsync();
-            throw new NotImplementedException();
+            var entity = await repository.CreateEntityAsync(mapper.ModelToEntityCreate(postDto));
+            
+            bool isCreated = await repository.CommitDbAsync();
+
+            if (!isCreated)
+                throw new Exception("Error creating post");
+
+            return mapper.EntityToModel(entity);
         }
 
         public Task<bool> DeletePostAsync(Guid topicId, DeleteType type = DeleteType.NoVisible)
@@ -29,9 +36,9 @@ namespace WebForum.Application.User.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdatePostAsync(PostDto postDto)
+        public async Task<PostDto> UpdatePostAsync(PostDto postDto)
         {
-            throw new NotImplementedException();
+            await repository.UpdateEntityAsync(postDto);
         }
     }
 }
