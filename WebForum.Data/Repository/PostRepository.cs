@@ -21,11 +21,12 @@ namespace WebForum.Infrastructure.Repository
                     UserId = i.UserId,
                     TopicId = i.TopicId,
                     Title = i.Title,
+                    IsDeleted = i.IsDeleted,
                     CreationDate = i.CreationDate,
                     Text = i.Text,
                 })
                 .AsNoTracking()
-                .ToListAsync();
+                .ToArrayAsync();
         }
 
         public async Task<IReadOnlyCollection<PostShortDto>>? GetCollectionShortDtoAsync(Guid? userId)
@@ -38,10 +39,11 @@ namespace WebForum.Infrastructure.Repository
                     UserId = i.UserId,
                     TopicId = i.TopicId,
                     Title = i.Title,
+                    IsDeleted = i.IsDeleted,
                     CreationDate = i.CreationDate
                 })
                 .AsNoTracking()
-                .ToListAsync();
+                .ToArrayAsync();
         }
 
         public async Task<PostDto>? GetDtoAsync(Guid postId)
@@ -54,6 +56,7 @@ namespace WebForum.Infrastructure.Repository
                     Text = i.Text,
                     Title = i.Title,
                     TopicId = i.TopicId,
+                    IsDeleted= i.IsDeleted,
                     CreationDate = i.CreationDate,
                     UserId = i.UserId
                 })
@@ -75,6 +78,7 @@ namespace WebForum.Infrastructure.Repository
                     Id = i.Id,
                     Title = i.Title,
                     TopicId = i.TopicId,
+                    IsDeleted = i.IsDeleted,
                     CreationDate = i.CreationDate,
                     UserId = i.UserId
                 })
@@ -87,27 +91,33 @@ namespace WebForum.Infrastructure.Repository
             return post;
         }
 
-        public async Task<bool> UpdateEntityAsync(PostDto postDto)
+        public async Task<PostDto> UpdateEntityAsync(PostDto postDto)
         {
-            bool isChanged = false;
-            await _dbSet
+            int rowsUpdated = await _dbSet
                 .Where(p => p.Id == postDto.Id)
-                .ExecuteUpdateAsync(set =>
+                .ExecuteUpdateAsync(set => set
+                    .SetProperty(p => p.Title, postDto.Title)
+                    .SetProperty(p => p.Text, postDto.Text)
+                );
+
+            if (rowsUpdated == 0)
+                throw new Exception("");
+
+            var updatedDto = await _dbSet
+                .AsNoTracking()
+                .Where(p => p.Id == postDto.Id)
+                .Select(i => new PostDto
                 {
-                    if (postDto.Title != null)
-                    {
-                        set.SetProperty(p => p.Title, postDto.Title);
-                        isChanged = true;
-                    }
+                    Id = i.Id,
+                    Text = i.Text,
+                    Title = i.Title,
+                    TopicId = i.TopicId,
+                    IsDeleted = i.IsDeleted,
+                    CreationDate = i.CreationDate,
+                    UserId = i.UserId
+                }).FirstOrDefaultAsync();
 
-                    if (postDto.Text != null)
-                    {
-                        set.SetProperty(p => p.Text, postDto.Text);
-                        isChanged = true;
-                    }
-                });
-
-            return isChanged;
+            return updatedDto;
         }
 
         public override async Task DeleteEntityAsync(Guid tkey, DeleteType type)

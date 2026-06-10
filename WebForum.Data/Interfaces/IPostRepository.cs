@@ -5,7 +5,7 @@ namespace WebForum.Infrastructure.Interfaces
 {
     public interface IPostRepository : IBaseRepository<Guid,Post>
     {
-        public Task<bool> UpdateEntityAsync(PostDto postDto);
+        public Task<PostDto> UpdateEntityAsync(PostDto postDto);
 
         public Task<PostDto>? GetDtoAsync(Guid postId);
 
