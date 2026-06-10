@@ -16,6 +16,8 @@ namespace WebForum.Core.Models
 
         public required string Title { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public DateTime CreationDate { get; set; }
     }
 }
