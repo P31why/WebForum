@@ -9,15 +9,15 @@ namespace WebForum.Infrastructure.Entities
         public Guid Id { get; set; } = Guid.NewGuid();
         
         [Required]
-        public Guid TopicId { get; set; }
+        public required Guid TopicId { get; set; }
 
         [ForeignKey(nameof(TopicId))]
-        public required Topic Topic { get; set; }
+        public Topic? Topic { get; set; }
 
-        public Guid UserId { get; set; }
+        public required Guid UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public required User User { get; set; } 
+        public User? User { get; set; } 
 
         public required string Title { get; set; }
         
