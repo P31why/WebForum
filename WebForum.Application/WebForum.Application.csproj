@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\WebForum.Core\WebForum.Core.csproj" />
     <ProjectReference Include="..\WebForum.Data\WebForum.Infrastructure.csproj" />
-    <ProjectReference Include="..\WebForum.Mapper\WebForum.Mapper.csproj" />
   </ItemGroup>
 
 </Project>

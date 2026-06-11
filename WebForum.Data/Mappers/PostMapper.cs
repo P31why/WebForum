@@ -13,6 +13,8 @@ namespace WebForum.Mapper
         {
             return new Post
             {
+                Id = dto.Id,
+
                 TopicId = dto.TopicId,
 
                 UserId = dto.UserId,
@@ -21,7 +23,9 @@ namespace WebForum.Mapper
 
                 Text = dto.Text,
 
-                IsDeleted = false
+                IsDeleted = false,
+
+                CreationDate = dto.CreationDate,
             };
         }
 
@@ -30,6 +34,7 @@ namespace WebForum.Mapper
         {
             return new PostDto
             {
+                Id = entity.Id,
                 TopicId = entity.TopicId,
 
                 UserId = entity.UserId,
@@ -39,6 +44,8 @@ namespace WebForum.Mapper
                 Text = entity.Text,
 
                 IsDeleted = entity.IsDeleted,
+
+                CreationDate = entity.CreationDate,
             };
         }
     }
