@@ -9,6 +9,6 @@ namespace WebForum.Infrastructure.Interfaces
 
         public Task<bool> CommitDbAsync();
 
-        public Task DeleteEntityAsync(TKey tkey, DeleteType type);
+        public Task<bool> DeleteEntityAsync(TKey tkey, DeleteType type);
     }
 }

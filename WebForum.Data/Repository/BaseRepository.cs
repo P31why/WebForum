@@ -31,13 +31,15 @@ namespace WebForum.Infrastructure.Repository
             return rowsAffected > 0;
         }
 
-        public virtual async Task DeleteEntityAsync(TKey tkey, DeleteType type)
+        public virtual async Task<bool> DeleteEntityAsync(TKey tkey, DeleteType type)
         {
+            int rows = 0;
 
-            if (type == DeleteType.NoVisible)
-                await _dbSet.Where(e => EqualityComparer<TKey>.Default.Equals(EF.Property<TKey>(e,"Id"),tkey))
+            if (type == DeleteType.Full)
+                rows = await _dbSet.Where(e => EqualityComparer<TKey>.Default.Equals(EF.Property<TKey>(e,"Id"),tkey))
                                                               .ExecuteDeleteAsync();
 
+            return rows > 0 ? true : false;
         }
     }
 }
