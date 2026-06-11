@@ -1,4 +1,5 @@
-﻿using WebForum.Core.Models;
+﻿using WebForum.Core;
+using WebForum.Core.Models;
 using WebForum.Infrastructure.Entities;
 
 namespace WebForum.Infrastructure.Interfaces
@@ -11,9 +12,9 @@ namespace WebForum.Infrastructure.Interfaces
 
         public Task<PostShortDto> GetShortDtoAsync(Guid postId);
 
-        public Task<IReadOnlyCollection<PostDto>> GetCollectionDtoAsync(Guid? userId);
+        public Task<IReadOnlyCollection<PostDto>> GetCollectionDtoAsync(Guid Id, IdType type);
 
-        public Task<IReadOnlyCollection<PostShortDto>> GetCollectionShortDtoAsync(Guid? userId);
+        public Task<IReadOnlyCollection<PostShortDto>> GetCollectionShortDtoAsync(Guid Id, IdType type);
         
     }
 }
