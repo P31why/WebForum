@@ -7,13 +7,13 @@ namespace WebForum.Infrastructure.Interfaces
     {
         public Task<PostDto> UpdateEntityAsync(PostDto postDto);
 
-        public Task<PostDto>? GetDtoAsync(Guid postId);
+        public Task<PostDto> GetDtoAsync(Guid postId);
 
-        public Task<PostShortDto>? GetShortDtoAsync(Guid postId);
+        public Task<PostShortDto> GetShortDtoAsync(Guid postId);
 
-        public Task<IReadOnlyCollection<PostDto>>? GetCollectionDtoAsync(Guid? userId);
+        public Task<IReadOnlyCollection<PostDto>> GetCollectionDtoAsync(Guid? userId);
 
-        public Task<IReadOnlyCollection<PostShortDto>>? GetCollectionShortDtoAsync(Guid? userId);
+        public Task<IReadOnlyCollection<PostShortDto>> GetCollectionShortDtoAsync(Guid? userId);
         
     }
 }

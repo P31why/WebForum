@@ -11,10 +11,14 @@ namespace WebForum.Infrastructure.Repository
 {
     public class PostRepository(AppDbContext dbContext) : BaseRepository<Guid, Post>(dbContext), IPostRepository
     {
-        public async Task<IReadOnlyCollection<PostDto>>? GetCollectionDtoAsync(Guid? userId)
+        public async Task<IReadOnlyCollection<PostDto>> GetCollectionDtoAsync(Guid? userId = null)
         {
-            return await _dbSet
-                .Where(p => p.UserId == userId)
+            var postQuery = _dbSet.AsNoTracking();
+
+            if(userId != null)
+                postQuery = postQuery.Where(p => p.UserId == userId);
+
+            return await postQuery
                 .Select(i => new PostDto
                 {
                     Id = i.Id,
@@ -25,13 +29,18 @@ namespace WebForum.Infrastructure.Repository
                     CreationDate = i.CreationDate,
                     Text = i.Text,
                 })
-                .AsNoTracking()
                 .ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<PostShortDto>>? GetCollectionShortDtoAsync(Guid? userId)
+        public async Task<IReadOnlyCollection<PostShortDto>> GetCollectionShortDtoAsync(Guid? userId)
         {
-            return await _dbSet
+            var postQuery = _dbSet.AsNoTracking();
+
+            if (userId != null)
+                postQuery = postQuery.Where(p => p.UserId == userId);
+
+            return await postQuery
+                .AsNoTracking()
                 .Where(p => p.UserId == userId)
                 .Select(i => new PostShortDto
                 {
@@ -42,13 +51,13 @@ namespace WebForum.Infrastructure.Repository
                     IsDeleted = i.IsDeleted,
                     CreationDate = i.CreationDate
                 })
-                .AsNoTracking()
                 .ToArrayAsync();
         }
 
-        public async Task<PostDto>? GetDtoAsync(Guid postId)
+        public async Task<PostDto> GetDtoAsync(Guid postId)
         {
             var post = await _dbSet
+                .AsNoTracking()
                 .Where(p => p.Id == postId)
                 .Select(i => new PostDto
                 {
@@ -60,7 +69,6 @@ namespace WebForum.Infrastructure.Repository
                     CreationDate = i.CreationDate,
                     UserId = i.UserId
                 })
-                .AsNoTracking()
                 .FirstOrDefaultAsync();
             
             if (post == null)
@@ -69,9 +77,10 @@ namespace WebForum.Infrastructure.Repository
             return post;
         }
 
-        public async Task<PostShortDto>? GetShortDtoAsync(Guid postId)
+        public async Task<PostShortDto> GetShortDtoAsync(Guid postId)
         {
             var post = await _dbSet
+                .AsNoTracking()
                 .Where(p => p.Id == postId)
                 .Select(i => new PostShortDto
                 {
@@ -82,7 +91,6 @@ namespace WebForum.Infrastructure.Repository
                     CreationDate = i.CreationDate,
                     UserId = i.UserId
                 })
-                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             if (post == null)
@@ -101,7 +109,7 @@ namespace WebForum.Infrastructure.Repository
                 );
 
             if (rowsUpdated == 0)
-                throw new Exception("");
+                throw new Exception("Error with update entity");
 
             var updatedDto = await _dbSet
                 .AsNoTracking()
@@ -116,6 +124,9 @@ namespace WebForum.Infrastructure.Repository
                     CreationDate = i.CreationDate,
                     UserId = i.UserId
                 }).FirstOrDefaultAsync();
+
+            if (updatedDto == null)
+                throw new Exception("Updated entity not found");
 
             return updatedDto;
         }
