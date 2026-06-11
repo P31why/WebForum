@@ -6,9 +6,9 @@ namespace WebForum.Application.User.Interfaces
 {
     public interface IPostService
     {
-        public Task<IReadOnlyCollection<PostShortDto>> GetAllShortAsync(Guid topicId);
+        public Task<IReadOnlyCollection<PostShortDto>> GetAllShortAsync(Guid Id, IdType type);
 
-        public Task<IReadOnlyCollection<PostDto>> GetAllAsync(Guid topicId);
+        public Task<IReadOnlyCollection<PostDto>> GetAllAsync(Guid Id, IdType type);
 
         public Task<PostDto> GetByIdAsync(Guid postId);
 

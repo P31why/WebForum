@@ -21,19 +21,19 @@ namespace WebForum.Application.User.Services
             return mapper.EntityToModel(entity);
         }
 
-        public Task<bool> DeletePostAsync(Guid topicId, DeleteType type = DeleteType.NoVisible)
+        public async Task<bool> DeletePostAsync(Guid topicId, DeleteType type = DeleteType.NoVisible)
         {
-            throw new NotImplementedException();
+            return await repository.DeleteEntityAsync(topicId, type);
         }
 
-        public Task<IReadOnlyCollection<PostDto>> GetAllAsync(Guid topicId)
+        public async Task<IReadOnlyCollection<PostDto>> GetAllAsync(Guid topicId, IdType type)
         {
-            throw new NotImplementedException();
+            return await repository.GetCollectionDtoAsync(topicId, type);
         }
 
-        public async Task<IReadOnlyCollection<PostShortDto>> GetAllShortAsync(Guid topicId)
+        public async Task<IReadOnlyCollection<PostShortDto>> GetAllShortAsync(Guid topicId, IdType type)
         {
-            return await repository.GetCollectionShortDtoAsync(topicId);
+            return await repository.GetCollectionShortDtoAsync(topicId, type);
         }
 
         public Task<PostDto> GetByIdAsync(Guid postId)
@@ -44,11 +44,6 @@ namespace WebForum.Application.User.Services
         public async Task<PostDto> UpdatePostAsync(PostDto postDto)
         {
             return await repository.UpdateEntityAsync(postDto);
-        }
-
-        Task<IReadOnlyCollection<PostShortDto>> IPostService.GetAllShortAsync(Guid topicId)
-        {
-            throw new NotImplementedException();
         }
     }
 }
