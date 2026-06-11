@@ -9,7 +9,7 @@
     public enum IdType
     {
         User = 1,
-        entity = 2,
+        Entity = 2,
     }
 
     public enum DeleteType
