@@ -26,19 +26,29 @@ namespace WebForum.Application.User.Services
             throw new NotImplementedException();
         }
 
-        public Task<PostShortDto> GetAllShortAsync(Guid topicId)
+        public Task<IReadOnlyCollection<PostDto>> GetAllAsync(Guid topicId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<PostShortDto>> GetAllShortAsync(Guid topicId)
+        {
+            return await repository.GetCollectionShortDtoAsync(topicId);
         }
 
         public Task<PostDto> GetByIdAsync(Guid postId)
         {
-            throw new NotImplementedException();
+            return repository.GetDtoAsync(postId);
         }
 
         public async Task<PostDto> UpdatePostAsync(PostDto postDto)
         {
-            await repository.UpdateEntityAsync(postDto);
+            return await repository.UpdateEntityAsync(postDto);
+        }
+
+        Task<IReadOnlyCollection<PostShortDto>> IPostService.GetAllShortAsync(Guid topicId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
