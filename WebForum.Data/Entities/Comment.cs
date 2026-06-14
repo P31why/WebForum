@@ -8,15 +8,15 @@ namespace WebForum.Infrastructure.Entities
     {
         public long Id { get; set; }
 
-        public Guid PostId { get; set; }
+        public required Guid PostId { get; set; }
 
         [ForeignKey(nameof(PostId))]
-        public required Post Post { get; set; }
+        public Post? Post { get; set; }
 
-        public Guid UserId { get; set; }
+        public required Guid UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public required User User { get; set; }
+        public User User { get; set; }
 
         public required string Text { get; set; }
 

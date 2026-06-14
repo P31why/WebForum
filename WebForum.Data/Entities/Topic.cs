@@ -8,10 +8,10 @@ namespace WebForum.Infrastructure.Entities
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public Guid UserId { get; set; }
+        public required Guid UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public required User Creator { get; set; }
+        public User? Creator { get; set; }
             
         public required string Title { get; set; }
 
