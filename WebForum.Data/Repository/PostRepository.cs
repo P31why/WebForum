@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 using WebForum.Core;
 using WebForum.Core.Models;
 using WebForum.Data;
@@ -12,7 +11,7 @@ namespace WebForum.Infrastructure.Repository
 {
     public class PostRepository(AppDbContext dbContext, PostMapper mapper) : BaseRepository<Guid, Post>(dbContext), IPostRepository
     {
-        public async Task<IReadOnlyCollection<PostDto>> GetCollectionDtoAsync(Guid Id, IdType type)
+        public async Task<IReadOnlyCollection<PostDto>?> GetCollectionDtoAsync(Guid Id, IdType type)
         {
             var postQuery = _dbSet
                 .AsNoTracking()
@@ -28,7 +27,7 @@ namespace WebForum.Infrastructure.Repository
                 .ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<PostShortDto>> GetCollectionShortDtoAsync(Guid Id, IdType type)
+        public async Task<IReadOnlyCollection<PostShortDto>?> GetCollectionShortDtoAsync(Guid Id, IdType type)
         {
             var postQuery = _dbSet
                 .AsNoTracking()
@@ -42,15 +41,7 @@ namespace WebForum.Infrastructure.Repository
             return await postQuery
                 .AsNoTracking()
                 .Where(p => p.UserId == Id)
-                .Select(i => new PostShortDto
-                {
-                    Id = i.Id,
-                    UserId = i.UserId,
-                    TopicId = i.TopicId,
-                    Title = i.Title,
-                    IsDeleted = i.IsDeleted,
-                    CreationDate = i.CreationDate
-                })
+                .Select(i => mapper.EntitytoShortDto(i))
                 .ToArrayAsync();
         }
 
@@ -73,15 +64,7 @@ namespace WebForum.Infrastructure.Repository
             var post = await _dbSet
                 .AsNoTracking()
                 .Where(p => p.Id == postId)
-                .Select(i => new PostShortDto
-                {
-                    Id = i.Id,
-                    Title = i.Title,
-                    TopicId = i.TopicId,
-                    IsDeleted = i.IsDeleted,
-                    CreationDate = i.CreationDate,
-                    UserId = i.UserId
-                })
+                .Select(i => mapper.EntitytoShortDto(i))
                 .FirstOrDefaultAsync();
 
             if (post == null)

@@ -12,9 +12,9 @@ namespace WebForum.Infrastructure.Interfaces
 
         public Task<PostShortDto> GetShortDtoAsync(Guid postId);
 
-        public Task<IReadOnlyCollection<PostDto>> GetCollectionDtoAsync(Guid Id, IdType type);
+        public Task<IReadOnlyCollection<PostDto>?> GetCollectionDtoAsync(Guid Id, IdType type);
 
-        public Task<IReadOnlyCollection<PostShortDto>> GetCollectionShortDtoAsync(Guid Id, IdType type);
+        public Task<IReadOnlyCollection<PostShortDto>?> GetCollectionShortDtoAsync(Guid Id, IdType type);
         
     }
 }
