@@ -4,10 +4,11 @@ using WebForum.Core.Models;
 using WebForum.Data;
 using WebForum.Infrastructure.Entities;
 using WebForum.Infrastructure.Interfaces;
+using WebForum.Infrastructure.Mappers;
 
 namespace WebForum.Infrastructure.Repository
 {
-    public class TopicRepository(AppDbContext dbContext) : BaseRepository<Guid, Topic>(dbContext), ITopicRepository
+    public class TopicRepository(AppDbContext dbContext, TopicMapper mapper) : BaseRepository<Guid, Topic>(dbContext), ITopicRepository
     {
         public async Task<IReadOnlyCollection<TopicDto>> GetCollectionDtoAsync(Guid? userId)
         {
@@ -94,18 +95,28 @@ namespace WebForum.Infrastructure.Repository
             return topic;
         }
 
-        public Task UpdateEntityAsync(TopicDto topicDto)
+        public async Task<TopicDto> UpdateEntityAsync(TopicDto topicDto)
         {
-            return _dbSet
+            int rowsUpdated = await _dbSet
                 .Where(t => t.Id == topicDto.Id)
-                .ExecuteUpdateAsync(set =>
-                {
-                    if (topicDto.Title != null)
-                        set.SetProperty(i => i.Title, topicDto.Title);
+                .ExecuteUpdateAsync(set => set
+                    .SetProperty(t => t.Title, topicDto.Title)
+                    .SetProperty(t => t.Description, topicDto.Description)
+                );
 
-                    if (topicDto.Description != null)
-                        set.SetProperty(i => i.Description, topicDto.Description);
-                });
+            if (rowsUpdated == 0)
+                throw new Exception("Error with update entity");
+
+            var updatedDto = await _dbSet
+                .AsNoTracking()
+                .Where(p => p.Id == topicDto.Id)
+                .Select(i => mapper.EntityToDto(i))
+                .FirstOrDefaultAsync();
+
+            if (updatedDto == null)
+                throw new Exception("Updated entity not found");
+
+            return updatedDto;
         }
     }
 }
