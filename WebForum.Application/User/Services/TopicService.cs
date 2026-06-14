@@ -1,19 +1,24 @@
 ﻿using WebForum.Application.User.Interface;
 using WebForum.Core.Models;
+using WebForum.Infrastructure.Entities;
 using WebForum.Infrastructure.Interfaces;
+using WebForum.Infrastructure.Mappers;
 
 namespace WebForum.Application.User.Services
 {
-    public class TopicService(ITopicRepository topicRepository, IFollowedTopicRepository followedTopicRepository) : ITopicService
+    public class TopicService(ITopicRepository topicRepository,
+                              TopicMapper mapper) : ITopicService
     {
-        public Task<TopicDto> AddAsync(TopicDto topicDto)
+        public async Task<TopicDto> AddAsync(TopicDto topicDto)
         {
-            throw new NotImplementedException();
-        }
+            var entity = await topicRepository.CreateEntityAsync(mapper.DtoToEntity(topicDto));
 
-        public async Task<IReadOnlyCollection<FollowedTopicDto>> GetAllFollowedTopicsAsync(Guid userId)
-        {
-            return (await followedTopicRepository.GetAllAsync(userId)) ?? Array.Empty<FollowedTopicDto>();
+            bool isCreated = await topicRepository.CommitDbAsync();
+
+            if (isCreated)
+                throw new Exception("Error creating topic");
+
+            return mapper.EntityToDto(entity);
         }
 
         public async Task<IReadOnlyCollection<TopicShortDto>> GetAllShortAsync(Guid? userId = null)
@@ -24,6 +29,11 @@ namespace WebForum.Application.User.Services
         public async Task<TopicDto> GetByIdAsync(Guid id)
         {
             return await topicRepository.GetDtoAsync(id);
+        }
+
+        public async Task<TopicDto> UpdateAsync(TopicDto topicDto)
+        {
+            return await topicRepository.UpdateEntityAsync(topicDto);
         }
     }
 }
