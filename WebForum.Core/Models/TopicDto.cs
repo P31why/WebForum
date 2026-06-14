@@ -12,6 +12,8 @@ namespace WebForum.Core.Models
     {
         public Guid Id { get; init; }
 
+        public bool IsDeleted { get; set; }
+
         public required string Title { get; set; }
 
     }
