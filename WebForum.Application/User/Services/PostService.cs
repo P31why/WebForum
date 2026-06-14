@@ -28,12 +28,12 @@ namespace WebForum.Application.User.Services
 
         public async Task<IReadOnlyCollection<PostDto>> GetAllAsync(Guid topicId, IdType type)
         {
-            return await repository.GetCollectionDtoAsync(topicId, type);
+            return await repository.GetCollectionDtoAsync(topicId, type) ?? Array.Empty<PostDto>();
         }
 
         public async Task<IReadOnlyCollection<PostShortDto>> GetAllShortAsync(Guid topicId, IdType type)
         {
-            return await repository.GetCollectionShortDtoAsync(topicId, type);
+            return await repository.GetCollectionShortDtoAsync(topicId, type) ?? Array.Empty<PostShortDto>();
         }
 
         public Task<PostDto> GetByIdAsync(Guid postId)
