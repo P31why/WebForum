@@ -48,5 +48,24 @@ namespace WebForum.Mapper
                 CreationDate = entity.CreationDate,
             };
         }
+
+        [UserMapping]
+        public PostShortDto EntitytoShortDto(Post entity)
+        {
+            return new PostShortDto
+            {
+                Id = entity.Id,
+
+                TopicId = entity.TopicId,
+
+                UserId = entity.UserId,
+
+                Title = entity.Title,
+
+                IsDeleted = entity.IsDeleted,
+
+                CreationDate = entity.CreationDate,
+            };
+        }
     }
 }
