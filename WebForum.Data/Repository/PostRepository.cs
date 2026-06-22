@@ -73,28 +73,16 @@ namespace WebForum.Infrastructure.Repository
             return post;
         }
 
-        public async Task<PostDto> UpdateEntityAsync(PostDto postDto)
+        public async Task<bool> UpdateEntityAsync(PostDto postDto)
         {
-            int rowsUpdated = await _dbSet
+            int rows = 0;
+            rows= await _dbSet
                 .Where(p => p.Id == postDto.Id)
                 .ExecuteUpdateAsync(set => set
                     .SetProperty(p => p.Title, postDto.Title)
                     .SetProperty(p => p.Text, postDto.Text)
                 );
-
-            if (rowsUpdated == 0)
-                throw new Exception("Error with update entity");
-
-            var updatedDto = await _dbSet
-                .AsNoTracking()
-                .Where(p => p.Id == postDto.Id)
-                .Select(i => mapper.EntityToModel(i))
-                .FirstOrDefaultAsync();
-
-            if (updatedDto == null)
-                throw new Exception("Updated entity not found");
-
-            return updatedDto;
+            return rows > 0 ? true : false;
         }
 
         public override async Task<bool> DeleteEntityAsync(Guid tkey, DeleteType type)
