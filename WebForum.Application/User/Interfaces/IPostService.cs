@@ -14,7 +14,7 @@ namespace WebForum.Application.User.Interfaces
 
         public Task<PostDto> AddPostAsync(PostDto postDto);
 
-        public Task<PostDto> UpdatePostAsync (PostDto postDto);
+        public Task<bool> UpdatePostAsync (PostDto postDto);
 
         public Task<bool> DeletePostAsync (Guid topicId, DeleteType type = DeleteType.NoVisible);
     }

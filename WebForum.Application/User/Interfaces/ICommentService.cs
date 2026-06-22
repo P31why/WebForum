@@ -10,7 +10,7 @@ namespace WebForum.Application.User.Interfaces
 
         public Task<CommentDto> AddAsync(CommentDto dto);
 
-        public Task<CommentDto> UpdateAsync(CommentDto dto);
+        public Task<bool> UpdateAsync(CommentDto dto);
 
         public Task<bool> DeleteAsync(long id, DeleteType type);
     }

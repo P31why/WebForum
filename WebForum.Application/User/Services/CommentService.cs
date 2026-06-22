@@ -32,7 +32,7 @@ namespace WebForum.Application.User.Services
             return await repository.GetCollectionDtoAsync(postId, type) ?? Array.Empty<CommentDto>();
         }
 
-        public async Task<CommentDto> UpdateAsync(CommentDto dto)
+        public async Task<bool> UpdateAsync(CommentDto dto)
         {
             return await repository.UpdateEntityAsync(dto);
         }

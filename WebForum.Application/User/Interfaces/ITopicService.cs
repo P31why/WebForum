@@ -7,7 +7,7 @@ namespace WebForum.Application.User.Interface
     {
         public Task<TopicDto> AddAsync(TopicDto topicDto);
 
-        public Task<TopicDto> UpdateAsync(TopicDto topicDto);
+        public Task<bool> UpdateAsync(TopicDto topicDto);
 
         public Task<IReadOnlyCollection<TopicShortDto>> GetAllShortAsync(Guid? userId = null);
 
