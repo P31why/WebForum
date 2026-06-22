@@ -1,8 +1,5 @@
 ﻿
-using System.ComponentModel.DataAnnotations;
-using System.Numerics;
 using WebForum.Infrastructure;
-using WebForum.Infrastructure.Entities;
 
 namespace WebForum.Data.Entities
 {
