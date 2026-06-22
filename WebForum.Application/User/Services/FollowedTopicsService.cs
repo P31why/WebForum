@@ -24,6 +24,7 @@ namespace WebForum.Application.User.Services
 
         public async Task<bool> DeleteAsync(long id, DeleteType type = DeleteType.Full)
         {
+            // TODO: second delete variant
             return await repository.DeleteEntityAsync(id, type);
         }
 
