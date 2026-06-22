@@ -12,7 +12,7 @@ namespace WebForum.Core.Models
     {
         public required Guid Id { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public required string UserName { get; set; }
     }
