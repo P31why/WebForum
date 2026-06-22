@@ -8,7 +8,7 @@ using WebForum.Infrastructure.Mappers;
 namespace WebForum.Application.User.Services
 {
     public class FollowedTopicsService(IFollowedTopicRepository repository,
-                                       FollowedTopicsMapper mapper) : IFollowTopicService
+                                       FollowedTopicsMapper mapper) : IFollowedTopicService
     {
         public async Task<FollowedTopicDto> AddAsync(FollowedTopicDto dto)
         {

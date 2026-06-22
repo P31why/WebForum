@@ -5,7 +5,7 @@ using WebForum.Core.Models;
 
 namespace WebForum.WebApi.Controllers
 {
-    public class FollowedTopicController(IFollowTopicService service) : BaseController
+    public class FollowedTopicController(IFollowedTopicService service) : BaseController
     {
         [HttpPost(nameof(AddAsync))]
         public async Task<FollowedTopicDto> AddAsync(FollowedTopicDto dto)

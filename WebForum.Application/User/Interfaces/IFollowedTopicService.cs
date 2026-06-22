@@ -4,7 +4,7 @@ using WebForum.Core.Models;
 
 namespace WebForum.Application.User.Interfaces
 {
-    public interface IFollowTopicService
+    public interface IFollowedTopicService
     {
         public Task<IReadOnlyCollection<FollowedTopicDto>> GetAllFollowedTopicsAsync(Guid userId);
 
