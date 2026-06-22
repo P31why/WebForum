@@ -7,7 +7,7 @@ namespace WebForum.Infrastructure.Interfaces
 {
     public interface ICommentRepository : IBaseRepository<long, Comment>
     {
-        public Task<CommentDto> UpdateEntityAsync(CommentDto commentDto);
+        public Task<bool> UpdateEntityAsync(CommentDto commentDto);
 
         public Task<CommentDto?> GetDtoAsync(long Id, IdType type);
 
