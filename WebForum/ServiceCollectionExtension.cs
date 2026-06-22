@@ -7,7 +7,9 @@ using WebForum.Data;
 using WebForum.Data.Entities;
 using WebForum.Infrastructure.Entities;
 using WebForum.Infrastructure.Interfaces;
+using WebForum.Infrastructure.Mappers;
 using WebForum.Infrastructure.Repository;
+using WebForum.Mapper;
 
 namespace WebForum.WebApi
 {
@@ -31,8 +33,17 @@ namespace WebForum.WebApi
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IFollowedTopicRepository, FollowedTopicRepository>();
 
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITopicService, TopicService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IFollowedTopicService,  FollowedTopicsService>();
+
+            services.AddScoped<UserMapper>();
+            services.AddScoped<TopicMapper>();
+            services.AddScoped<PostMapper>();
+            services.AddScoped<CommentMapper>();
+            services.AddScoped<FollowedTopicsMapper>();
 
         }
     }
