@@ -21,9 +21,21 @@ namespace WebForum.Infrastructure.Repository
                 .ToListAsync());
         }
 
-        public override Task<bool> DeleteEntityAsync(long tkey, DeleteType type)
+        public override async Task<bool> DeleteEntityAsync(long tkey, DeleteType type)
         {
-            return base.DeleteEntityAsync(tkey, type);
+            /*int rows = 0;
+            bool isCompleted = false;
+
+            if (DeleteType.NoVisible == type)
+            {
+                rows = await _dbSet
+                    .AsNoTracking()
+                    .Where(ft => ft.Id == tkey)
+                    .Select(ft => mapper.EntityToDto(ft))
+                    .ExecuteUpdateAsync(set => set.SetProperty(i => i.));
+            }*/
+            
+            return await base.DeleteEntityAsync(tkey, type);
             //TODO: add IsDeleted
         }
     }
