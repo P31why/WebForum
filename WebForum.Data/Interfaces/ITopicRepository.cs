@@ -7,7 +7,7 @@ namespace WebForum.Infrastructure.Interfaces
 {
     public interface ITopicRepository : IBaseRepository<Guid, Topic>
     {
-        public Task<TopicDto> UpdateEntityAsync(TopicDto topicDto);
+        public Task<bool> UpdateEntityAsync(TopicDto topicDto);
 
         public Task<TopicDto> GetDtoAsync(Guid topicId);
 

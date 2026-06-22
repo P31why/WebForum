@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using WebForum.Core.Models;
 using WebForum.Data;
 using WebForum.Infrastructure.Entities;
@@ -15,25 +16,17 @@ namespace WebForum.Infrastructure.Repository
             if(userId == null)
             {
                 return await _dbSet
-                    .Select(i => new TopicDto
-                    {
-                        Id = i.Id,
-                        UserId = i.UserId,
-                        Title = i.Title,
-                        Description = i.Description
-                    }).AsNoTracking().ToListAsync();
+                    .AsNoTracking()
+                    .Select(i => mapper.EntityToDto(i))
+                    .ToListAsync();
             }
             else
             {
                 return await _dbSet
+                    .AsNoTracking()
                     .Where(t => t.UserId == userId)
-                    .Select(i => new TopicDto
-                    {
-                        Id = i.Id,
-                        UserId = i.UserId,
-                        Title = i.Title,
-                        Description = i.Description
-                    }).AsNoTracking().ToListAsync();
+                    .Select(i => mapper.EntityToDto(i))
+                    .ToListAsync();
 
             }
         }
@@ -43,35 +36,34 @@ namespace WebForum.Infrastructure.Repository
             if (userId == null)
             {
                 return await _dbSet
+                    .AsNoTracking()
                     .Select(i => new TopicShortDto
                     {
                         Id = i.Id,
                         Title = i.Title,
-                    }).AsNoTracking().ToListAsync();
+                    })
+                    .ToListAsync();
             }
             else
             {
                 return await _dbSet
+                    .AsNoTracking()
                     .Where(t => t.UserId == userId)
                     .Select(i => new TopicShortDto
                     {
                         Id = i.Id,
                         Title = i.Title,
-                    }).AsNoTracking().ToListAsync();
+                    }).ToListAsync();
             }
         }
 
         public async Task<TopicDto> GetDtoAsync(Guid topicId)
         {
             var topic = await _dbSet
+                .AsNoTracking()
                 .Where(t => t.Id == topicId)
-                .Select(i => new TopicDto
-                {
-                    Id = i.Id,
-                    UserId = i.UserId,
-                    Title = i.Title,
-                    Description = i.Description
-                }).AsNoTracking().FirstOrDefaultAsync();
+                .Select(i => mapper.EntityToDto(i))
+                .FirstOrDefaultAsync();
 
             if (topic == null)
                 throw new Exception("This topic does not exist");
@@ -82,12 +74,13 @@ namespace WebForum.Infrastructure.Repository
         public async Task<TopicShortDto> GetShortDtoAsync(Guid topicId)
         {
             var topic = await _dbSet
+                .AsNoTracking()
                 .Where(t => t.Id == topicId)
                 .Select(i => new TopicShortDto
                 {
                     Id = i.Id,
                     Title = i.Title,
-                }).AsNoTracking().FirstOrDefaultAsync();
+                }).FirstOrDefaultAsync();
 
             if (topic == null)
                 throw new Exception("This topic does not exist");
@@ -95,28 +88,18 @@ namespace WebForum.Infrastructure.Repository
             return topic;
         }
 
-        public async Task<TopicDto> UpdateEntityAsync(TopicDto topicDto)
+        public async Task<bool> UpdateEntityAsync(TopicDto topicDto)
         {
-            int rowsUpdated = await _dbSet
+            int rows = 0;
+
+            rows = await _dbSet
                 .Where(t => t.Id == topicDto.Id)
                 .ExecuteUpdateAsync(set => set
                     .SetProperty(t => t.Title, topicDto.Title)
                     .SetProperty(t => t.Description, topicDto.Description)
                 );
 
-            if (rowsUpdated == 0)
-                throw new Exception("Error with update entity");
-
-            var updatedDto = await _dbSet
-                .AsNoTracking()
-                .Where(p => p.Id == topicDto.Id)
-                .Select(i => mapper.EntityToDto(i))
-                .FirstOrDefaultAsync();
-
-            if (updatedDto == null)
-                throw new Exception("Updated entity not found");
-
-            return updatedDto;
+            return rows > 0 ? true : false;
         }
     }
 }
