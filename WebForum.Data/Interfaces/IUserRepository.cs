@@ -15,10 +15,8 @@ namespace WebForum.Infrastructure.Interfaces
         
         Task<IEnumerable<UserShortDto>>? GetCollectionShortDtoAsync();
         
-        Task UpdateUserEntityAsync(UserDto userDto, UserModelType type);
+        Task<bool> UpdateUserEntityAsync(UserDto userDto, UserModelType type);
 
-        Task UpdateUserPasswordAsync(Guid userId, string hash);
-
-        Task DeleteEntityAsync(Guid userId, DeleteType type);
+        Task<bool> UpdateUserPasswordAsync(Guid userId, string hash);
     }
 }
