@@ -16,7 +16,7 @@ namespace WebForum.Infrastructure.Entities
         public required Guid UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User? User { get; set; }
 
         public required string Text { get; set; }
 
