@@ -6,14 +6,16 @@ using WebForum.Data.Entities;
 namespace WebForum.Infrastructure.Interfaces
 {
     public interface IUserRepository : IBaseRepository<Guid, User>
-    {        
-        Task<UserDto> GetDtoAsync(Guid userId);
+    {
+        Task<UserDto> AddNewUser(RegistraitionUserDto dto);
 
-        Task<UserShortDto> GetShortDtoAsync(Guid userId);
+        Task<UserDto?> GetDtoAsync(Guid userId);
 
-        Task<IEnumerable<UserDto>>? GetCollectionDtoAsync();
+        Task<UserShortDto?> GetShortDtoAsync(Guid userId);
+
+        Task<IReadOnlyCollection<UserDto>?> GetCollectionDtoAsync();
         
-        Task<IEnumerable<UserShortDto>>? GetCollectionShortDtoAsync();
+        Task<IReadOnlyCollection<UserShortDto>?> GetCollectionShortDtoAsync();
         
         Task<bool> UpdateUserEntityAsync(UserDto userDto, UserModelType type);
 

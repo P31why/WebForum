@@ -29,7 +29,7 @@ namespace WebForum.Infrastructure.Repository
             return isComplete;
         }
 
-        public async Task<UserDto> GetDtoAsync(Guid userId)
+        public async Task<UserDto?> GetDtoAsync(Guid userId)
         {
             var user = await _dbSet
                 .AsNoTracking()
@@ -37,13 +37,10 @@ namespace WebForum.Infrastructure.Repository
                 .Select(u => mapper.EntityToDto(u))
                 .FirstOrDefaultAsync();
 
-            if (user == null)
-                throw new Exception("User is not exist");
-
             return user;
         }
 
-        public async Task<IEnumerable<UserDto>>? GetCollectionDtoAsync()
+        public async Task<IReadOnlyCollection<UserDto>?> GetCollectionDtoAsync()
         {
             return await _dbSet
                 .AsNoTracking()
@@ -51,9 +48,9 @@ namespace WebForum.Infrastructure.Repository
                 .ToArrayAsync();
         }
 
-        public async Task<UserShortDto> GetShortDtoAsync(Guid userId)
+        public async Task<UserShortDto?> GetShortDtoAsync(Guid userId)
         {
-            var user = await _dbSet
+            return await _dbSet
                 .AsNoTracking()
                 .Where(u => u.Id == userId)
                 .Select(u => new UserShortDto
@@ -62,14 +59,9 @@ namespace WebForum.Infrastructure.Repository
                     UserName = u.UserName
                 })
                 .FirstOrDefaultAsync();
-
-            if (user == null)
-                throw new Exception("This user does not exist");
-
-            return user;
         }
 
-        public async Task<IEnumerable<UserShortDto>>? GetCollectionShortDtoAsync()
+        public async Task<IReadOnlyCollection<UserShortDto>?> GetCollectionShortDtoAsync()
         {
             return await _dbSet
                 .AsNoTracking()
@@ -106,6 +98,16 @@ namespace WebForum.Infrastructure.Repository
             return rows > 0 ? true : false;
         }
 
-        
+        public async Task<UserDto> AddNewUser(RegistraitionUserDto dto)
+        {
+            await _dbSet.AddAsync(new User
+            {
+                UserName = dto.UserName,
+                Email = dto.Email,
+                PasswordHash = dto.Password,
+                IsDeleted = false
+            });
+
+        }
     }
 }
