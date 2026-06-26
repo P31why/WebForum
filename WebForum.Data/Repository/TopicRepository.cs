@@ -13,6 +13,7 @@ namespace WebForum.Infrastructure.Repository
     {
         public async Task<IReadOnlyCollection<TopicDto>> GetCollectionDtoAsync(Guid? userId)
         {
+            //TODO: переебать задуплированных чертей
             if(userId == null)
             {
                 return await _dbSet
@@ -20,41 +21,31 @@ namespace WebForum.Infrastructure.Repository
                     .Select(i => mapper.EntityToDto(i))
                     .ToListAsync();
             }
-            else
-            {
-                return await _dbSet
-                    .AsNoTracking()
-                    .Where(t => t.UserId == userId)
-                    .Select(i => mapper.EntityToDto(i))
-                    .ToListAsync();
 
-            }
+            return await _dbSet
+                .AsNoTracking()
+                .Where(t => t.UserId == userId)
+                .Select(i => mapper.EntityToDto(i))
+                .ToListAsync();
+
+            
         }
 
         public async Task<IReadOnlyCollection<TopicShortDto>> GetCollectionShortDtoAsync(Guid? userId)
         {
-            if (userId == null)
-            {
-                return await _dbSet
-                    .AsNoTracking()
-                    .Select(i => new TopicShortDto
-                    {
-                        Id = i.Id,
-                        Title = i.Title,
-                    })
-                    .ToListAsync();
-            }
-            else
-            {
-                return await _dbSet
-                    .AsNoTracking()
-                    .Where(t => t.UserId == userId)
-                    .Select(i => new TopicShortDto
-                    {
-                        Id = i.Id,
-                        Title = i.Title,
-                    }).ToListAsync();
-            }
+            var query = _dbSet
+                .AsNoTracking();
+
+            if (userId != null)
+                query.Where(t => t.UserId == userId);
+
+            return await query
+                .Select(i => new TopicShortDto
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                })
+                .ToListAsync();
         }
 
         public async Task<TopicDto> GetDtoAsync(Guid topicId)
@@ -90,16 +81,12 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<bool> UpdateEntityAsync(TopicDto topicDto)
         {
-            int rows = 0;
-
-            rows = await _dbSet
+            return await _dbSet
                 .Where(t => t.Id == topicDto.Id)
                 .ExecuteUpdateAsync(set => set
                     .SetProperty(t => t.Title, topicDto.Title)
                     .SetProperty(t => t.Description, topicDto.Description)
-                );
-
-            return rows > 0 ? true : false;
+                ) > 0;
         }
     }
 }
