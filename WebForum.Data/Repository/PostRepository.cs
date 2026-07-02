@@ -77,20 +77,13 @@ namespace WebForum.Infrastructure.Repository
 
         public override async Task<bool> DeleteEntityAsync(Guid tkey, DeleteType type)
         {
-            int rows = 0;
-            bool isCompleted = false;
-
             if (DeleteType.NoVisible == type)
             {
-                rows = await _dbSet.Where(p => p.Id == tkey)
-                    .ExecuteUpdateAsync(set => set.SetProperty(i => i.IsDeleted, true));
-
-                isCompleted = rows > 0 ? true : false;
+                return await _dbSet.Where(p => p.Id == tkey)
+                    .ExecuteUpdateAsync(set => set.SetProperty(i => i.IsDeleted, true)) > 0;
             }
-            else
-                isCompleted = await base.DeleteEntityAsync(tkey, type);
 
-            return isCompleted;
+            return await base.DeleteEntityAsync(tkey, type);
         }
     }
 }

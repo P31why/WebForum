@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using WebForum.Core;
 using WebForum.Core.Models;
 using WebForum.Data;
 using WebForum.Infrastructure.Entities;
@@ -91,6 +92,19 @@ namespace WebForum.Infrastructure.Repository
                     .SetProperty(t => t.Title, topicDto.Title)
                     .SetProperty(t => t.Description, topicDto.Description)
                 ) > 0;
+        }
+
+        public override async Task<bool> DeleteEntityAsync(Guid tkey, DeleteType type)
+        {
+            if(DeleteType.NoVisible == type)
+            {
+                return await _dbSet
+                    .AsNoTracking()
+                    .Where(t => t.Id == tkey && t.IsDeleted == false)
+                    .ExecuteUpdateAsync(set => set.SetProperty(t => t.IsDeleted, true)) > 0;
+            }
+
+            return await base.DeleteEntityAsync(tkey, type);
         }
     }
 }

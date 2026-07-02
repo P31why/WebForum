@@ -15,10 +15,8 @@ namespace WebForum.Infrastructure.Repository
         {
             if (DeleteType.NoVisible == type)
             {
-                int rows = await _dbSet.Where(u => u.Id == userId && u.IsDeleted == false)
-                    .ExecuteUpdateAsync(q => q.SetProperty(u => u.IsDeleted, true));
-
-                return rows > 0;
+                return await _dbSet.Where(u => u.Id == userId && u.IsDeleted == false)
+                    .ExecuteUpdateAsync(q => q.SetProperty(u => u.IsDeleted, true)) > 0;
             }
             
             return await base.DeleteEntityAsync(userId, type);
