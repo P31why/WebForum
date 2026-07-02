@@ -13,6 +13,8 @@ namespace WebForum.Infrastructure.Interfaces
 
         public Task<TopicShortDto> GetShortDtoAsync(Guid topicId);
 
+        public Task<bool> GetSameNameTopic(string name);
+
         public Task<IReadOnlyCollection<TopicDto>> GetCollectionDtoAsync(Guid? userId);
 
         public Task<IReadOnlyCollection<TopicShortDto>> GetCollectionShortDtoAsync(Guid? userId);
