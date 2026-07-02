@@ -1,6 +1,7 @@
 ﻿
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 
 namespace WebForum.Application.User.Interfaces
 {
@@ -8,7 +9,7 @@ namespace WebForum.Application.User.Interfaces
     {
         public Task<IReadOnlyCollection<CommentDto>> GetAllAsync(Guid postId, IdType type);
 
-        public Task<CommentDto> AddAsync(CommentDto dto);
+        public Task<CommentDto> AddAsync(CreateCommentRequestModel requestModel);
 
         public Task<bool> UpdateAsync(CommentDto dto);
 

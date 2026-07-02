@@ -2,6 +2,7 @@
 using WebForum.Application.User.Interfaces;
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Infrastructure.Interfaces;
 using WebForum.Mapper;
 
@@ -9,9 +10,9 @@ namespace WebForum.Application.User.Services
 {
     public class PostService(IPostRepository repository, PostMapper mapper) : IPostService
     {
-        public async Task<PostDto> AddPostAsync(PostDto postDto)
+        public async Task<PostDto> AddPostAsync(CreatePostRequestModel postRequest)
         {
-            var entity = await repository.CreateEntityAsync(mapper.ModelToEntityCreate(postDto));
+            var entity = await repository.CreateEntityAsync(mapper.RequestToEntity(postRequest));
             
             bool isCreated = await repository.CommitDbAsync();
 

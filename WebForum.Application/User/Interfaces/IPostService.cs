@@ -1,6 +1,7 @@
 ﻿
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 
 namespace WebForum.Application.User.Interfaces
 {
@@ -12,7 +13,7 @@ namespace WebForum.Application.User.Interfaces
 
         public Task<PostDto> GetByIdAsync(Guid postId);
 
-        public Task<PostDto> AddPostAsync(PostDto postDto);
+        public Task<PostDto> AddPostAsync(CreatePostRequestModel postRequest);
 
         public Task<bool> UpdatePostAsync (PostDto postDto);
 

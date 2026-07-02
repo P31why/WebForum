@@ -2,6 +2,7 @@
 using WebForum.Application.User.Interfaces;
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Infrastructure.Interfaces;
 using WebForum.Infrastructure.Mappers;
 
@@ -9,9 +10,9 @@ namespace WebForum.Application.User.Services
 {
     public class CommentService(ICommentRepository repository, CommentMapper mapper) : ICommentService
     {
-        public async Task<CommentDto> AddAsync(CommentDto dto)
+        public async Task<CommentDto> AddAsync(CreateCommentRequestModel requestModel)
         {
-            var entity = await repository.CreateEntityAsync(mapper.DtoToEntity(dto));
+            var entity = await repository.CreateEntityAsync(mapper.RequestToEntity(requestModel));
 
             bool isCreated = await repository.CommitDbAsync();
 
