@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebForum.Application.User.Interfaces;
 using WebForum.Core;
 using WebForum.Core.Models;
 
 namespace WebForum.WebApi.Controllers
 {
+    [Authorize]
     public class FollowedTopicController(IFollowedTopicService service) : BaseController
     {
         [HttpPost(nameof(AddAsync))]

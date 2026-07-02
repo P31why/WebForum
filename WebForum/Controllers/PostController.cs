@@ -2,6 +2,7 @@
 using WebForum.Application.User.Interfaces;
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 
 namespace WebForum.WebApi.Controllers
 {
@@ -20,7 +21,7 @@ namespace WebForum.WebApi.Controllers
         }
 
         [HttpPost(nameof(AddAsync))]
-        public async Task<PostDto> AddAsync(PostDto dto)
+        public async Task<PostDto> AddAsync(CreatePostRequestModel dto)
         {
             return await service.AddPostAsync(dto);
         }
