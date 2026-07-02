@@ -13,20 +13,15 @@ namespace WebForum.Infrastructure.Repository
 
         public override async Task<bool> DeleteEntityAsync(Guid userId, DeleteType type)
         {
-            int rows = 0;
-            bool isComplete = false;
-
             if (DeleteType.NoVisible == type)
             {
-                rows = await _dbSet.Where(u => u.Id == userId && u.IsDeleted == false)
+                int rows = await _dbSet.Where(u => u.Id == userId && u.IsDeleted == false)
                     .ExecuteUpdateAsync(q => q.SetProperty(u => u.IsDeleted, true));
 
-                isComplete = rows > 0;
+                return rows > 0;
             }
-            else
-                 await base.DeleteEntityAsync(userId, type);
-
-            return isComplete;
+            
+            return await base.DeleteEntityAsync(userId, type);
         }
 
         public async Task<UserDto?> GetDtoAsync(Guid userId)
