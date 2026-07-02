@@ -24,7 +24,8 @@ namespace WebForum.WebApi
         {
             services.AddMvc();
 
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+            //services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("PostgreSql")));
 
             services.Configure<JwtOptions>(configuration.GetSection("JwtOptions"));
 
