@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Application.User.Interface;
+using WebForum.Core;
 using WebForum.Core.Models;
 using WebForum.Core.RequestModels;
 
@@ -39,6 +40,13 @@ namespace WebForum.WebApi.Controllers
         public async Task<bool> UpdateAsync(TopicDto dto)
         {
             return await service.UpdateAsync(dto);
+        }
+
+        [Authorize]
+        [HttpDelete(nameof(DeleteAsync))]
+        public async Task<bool> DeleteAsync(Guid topicId, DeleteType deleteType)
+        {
+            return await service.DeleteAsync(topicId, deleteType);
         }
     }
 }

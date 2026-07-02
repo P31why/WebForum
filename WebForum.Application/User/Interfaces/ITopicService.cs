@@ -1,4 +1,5 @@
-﻿using WebForum.Core.Models;
+﻿using WebForum.Core;
+using WebForum.Core.Models;
 using WebForum.Core.RequestModels;
 
 namespace WebForum.Application.User.Interface
@@ -13,5 +14,7 @@ namespace WebForum.Application.User.Interface
         public Task<IReadOnlyCollection<TopicShortDto>> GetAllShortAsync(Guid? userId = null);
 
         public Task<TopicDto> GetByIdAsync(Guid id);
+
+        public Task<bool> DeleteAsync(Guid id, DeleteType type);
     }
 }
