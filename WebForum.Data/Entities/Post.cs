@@ -4,6 +4,7 @@ using WebForum.Data.Entities;
 
 namespace WebForum.Infrastructure.Entities
 {
+    [Table("Posts", Schema = "public")]
     public class Post : IId<Guid>
     {
         public Guid Id { get; set; } = Guid.NewGuid();
