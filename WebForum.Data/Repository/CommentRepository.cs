@@ -31,7 +31,7 @@ namespace WebForum.Infrastructure.Repository
         {
             return await _dbSet
                 .AsNoTracking()
-                .Where(c => c.Id == PostId)
+                .Where(c => c.Id == PostId && c.IsDeleted == false)
                 .Select(i => mapper.EntityToDto(i))
                 .FirstOrDefaultAsync();
         }
@@ -40,7 +40,9 @@ namespace WebForum.Infrastructure.Repository
         {
             int rows = 0;
             rows = await _dbSet
-                .Where(c => c.Id == commentDto.Id && c.PostId == commentDto.PostId)
+                .Where(c => c.Id == commentDto.Id && 
+                            c.PostId == commentDto.PostId && 
+                            c.IsDeleted == false)
                 .ExecuteUpdateAsync(set =>
                 {
                     set.SetProperty(i => i.Text, commentDto.Text);

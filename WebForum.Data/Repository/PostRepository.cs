@@ -47,37 +47,27 @@ namespace WebForum.Infrastructure.Repository
 
         public async Task<PostDto> GetDtoAsync(Guid postId)
         {
-            var post = await _dbSet
+            return await _dbSet
                 .AsNoTracking()
-                .Where(p => p.Id == postId)
+                .Where(p => p.Id == postId && p.IsDeleted == false)
                 .Select(i => mapper.EntityToModel(i))
-                .FirstOrDefaultAsync();
-            
-            if (post == null)
-                throw new Exception("Post is not exist");
-
-            return post;
+                .FirstOrDefaultAsync() ?? throw new Exception("Post is not exist");
         }
 
         public async Task<PostShortDto> GetShortDtoAsync(Guid postId)
         {
-            var post = await _dbSet
+            return await _dbSet
                 .AsNoTracking()
-                .Where(p => p.Id == postId)
+                .Where(p => p.Id == postId && p.IsDeleted == false)
                 .Select(i => mapper.EntitytoShortDto(i))
-                .FirstOrDefaultAsync();
-
-            if (post == null)
-                throw new Exception("Post is not exist");
-
-            return post;
+                .FirstOrDefaultAsync() ?? throw new Exception("Post is not exist");
         }
 
         public async Task<bool> UpdateEntityAsync(PostDto postDto)
         {
             int rows = 0;
             rows= await _dbSet
-                .Where(p => p.Id == postDto.Id)
+                .Where(p => p.Id == postDto.Id && p.IsDeleted == false)
                 .ExecuteUpdateAsync(set => set
                     .SetProperty(p => p.Title, postDto.Title)
                     .SetProperty(p => p.Text, postDto.Text)
