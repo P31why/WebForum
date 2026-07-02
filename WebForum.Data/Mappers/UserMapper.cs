@@ -1,6 +1,7 @@
 ﻿
 using Riok.Mapperly.Abstractions;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Data.Entities;
 
 namespace WebForum.Infrastructure.Mappers
@@ -40,6 +41,20 @@ namespace WebForum.Infrastructure.Mappers
                 Id = entity.Id,
                 IsDeleted = entity.IsDeleted,
                 UserName = entity.UserName
+            };
+        }
+
+        [UserMapping]
+        public User RegisterDtoToEntity(RegistraitionUserDto dto)
+        {
+            return new User
+            {
+                Id = Guid.NewGuid(),
+                UserName = dto.UserName,
+                Email = dto.Email,
+                IsDeleted = false,
+                PasswordHash = dto.Password,
+                CreationDate = DateTime.UtcNow
             };
         }
     }

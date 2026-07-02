@@ -1,6 +1,7 @@
 ﻿
 using Riok.Mapperly.Abstractions;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Infrastructure.Entities;
 
 namespace WebForum.Infrastructure.Mappers
@@ -43,6 +44,19 @@ namespace WebForum.Infrastructure.Mappers
                 IsDeleted = entity.IsDeleted,
 
                 CreationDate = entity.CreationDate,
+            };
+        }
+
+        [UserMapping]
+        public Comment RequestToEntity(CreateCommentRequestModel requestModel)
+        {
+            return new Comment
+            {
+                UserId = requestModel.UserId,
+                PostId = requestModel.PostId,
+                Text = requestModel.Text,
+                IsDeleted = false,
+                CreationDate = DateTime.UtcNow
             };
         }
     }
