@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /WebForum/appsettings.json
 /WebForum/appsettings.Development.json
+/WebForum.Client/WebForum.Client.csproj
+/WebForum.Client

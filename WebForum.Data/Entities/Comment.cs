@@ -6,6 +6,7 @@ namespace WebForum.Infrastructure.Entities
 {
     public class Comment : IId<long>
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
         public required Guid PostId { get; set; }
