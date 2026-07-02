@@ -72,7 +72,7 @@ namespace WebForum.Infrastructure.Repository
                     .SetProperty(p => p.Title, postDto.Title)
                     .SetProperty(p => p.Text, postDto.Text)
                 );
-            return rows > 0 ? true : false;
+            return rows > 0;
         }
 
         public override async Task<bool> DeleteEntityAsync(Guid tkey, DeleteType type)

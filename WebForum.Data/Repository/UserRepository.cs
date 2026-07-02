@@ -21,7 +21,7 @@ namespace WebForum.Infrastructure.Repository
                 rows = await _dbSet.Where(u => u.Id == userId && u.IsDeleted == false)
                     .ExecuteUpdateAsync(q => q.SetProperty(u => u.IsDeleted, true));
 
-                isComplete = rows > 0 ? true : false;
+                isComplete = rows > 0;
             }
             else
                  await base.DeleteEntityAsync(userId, type);
@@ -87,7 +87,7 @@ namespace WebForum.Infrastructure.Repository
                     set.SetProperty(e => e.Email, userDto.Email ?? null);
                 });
 
-            return rows > 0 ? true : false;
+            return rows > 0;
         }
 
         public async Task<bool> UpdateUserPasswordAsync(Guid userId, string hash)
@@ -97,7 +97,7 @@ namespace WebForum.Infrastructure.Repository
             rows = await _dbSet.Where(u => u.Id == userId && u.IsDeleted == false)
                 .ExecuteUpdateAsync(u => u.SetProperty(h => h.PasswordHash, hash));
 
-            return rows > 0 ? true : false;
+            return rows > 0;
         }
 
 

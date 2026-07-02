@@ -49,7 +49,7 @@ namespace WebForum.Infrastructure.Repository
                     set.SetProperty(i => i.CreationDate, DateTime.UtcNow);
                 });
 
-            return rows > 0 ? true : false;
+            return rows > 0 ;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace WebForum.Infrastructure.Repository
                 rows = await _dbSet.Where(e => EqualityComparer<TKey>.Default.Equals(EF.Property<TKey>(e,"Id"),tkey))
                                                               .ExecuteDeleteAsync();
 
-            return rows > 0 ? true : false;
+            return rows > 0 ;
         }
     }
 }
