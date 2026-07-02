@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebForum.Application.User.Interfaces;
 using WebForum.Core;
 using WebForum.Core.Models;
@@ -28,18 +29,21 @@ namespace WebForum.WebApi.Controllers
             return await service.GetByIdAsync(userId);
         }
 
+        [Authorize]
         [HttpPost(nameof(UpdateAsync))]
         public async Task<bool> UpdateAsync(UserDto dto)
         {
             return await service.UpdateAsync(dto);
         }
 
+        [Authorize]
         [HttpPost(nameof(UpdatePassword))]
         public async Task<bool> UpdatePassword(Guid id, string password)
         {
             return await service.UpdatePasswordAsync(id, password);
         }
 
+        [Authorize]
         [HttpDelete(nameof(DeleteAsync))]
         public async Task<bool> DeleteAsync(Guid id, DeleteType type)
         {
