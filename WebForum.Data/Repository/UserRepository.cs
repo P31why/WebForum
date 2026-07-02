@@ -18,7 +18,7 @@ namespace WebForum.Infrastructure.Repository
 
             if (DeleteType.NoVisible == type)
             {
-                rows = await _dbSet.Where(u => u.Id == userId)
+                rows = await _dbSet.Where(u => u.Id == userId && u.IsDeleted == false)
                     .ExecuteUpdateAsync(q => q.SetProperty(u => u.IsDeleted, true));
 
                 isComplete = rows > 0 ? true : false;
@@ -33,7 +33,7 @@ namespace WebForum.Infrastructure.Repository
         {
             var user = await _dbSet
                 .AsNoTracking()
-                .Where(u => u.Id == userId)
+                .Where(u => u.Id == userId && u.IsDeleted == false)
                 .Select(u => mapper.EntityToDto(u))
                 .FirstOrDefaultAsync();
 
@@ -44,6 +44,7 @@ namespace WebForum.Infrastructure.Repository
         {
             return await _dbSet
                 .AsNoTracking()
+                .Where(u => u.IsDeleted == false)
                 .Select(u => mapper.EntityToDto(u))
                 .ToArrayAsync();
         }
@@ -52,7 +53,7 @@ namespace WebForum.Infrastructure.Repository
         {
             return await _dbSet
                 .AsNoTracking()
-                .Where(u => u.Id == userId)
+                .Where(u => u.Id == userId && u.IsDeleted == false)
                 .Select(u => new UserShortDto
                 {
                     Id = u.Id,
@@ -65,6 +66,7 @@ namespace WebForum.Infrastructure.Repository
         {
             return await _dbSet
                 .AsNoTracking()
+                .Where(u => u.IsDeleted == false)
                 .Select(u => new UserShortDto
                 {
                     Id = u.Id,
@@ -78,11 +80,11 @@ namespace WebForum.Infrastructure.Repository
             int rows = 0;
 
             rows = await _dbSet
-                .Where(i => i.Id == userDto.Id)
+                .Where(u => u.Id == userDto.Id && u.IsDeleted == false)
                 .ExecuteUpdateAsync(set =>
                 {
-                    set.SetProperty(u => u.UserName, userDto.UserName);
-                    set.SetProperty(e => e.Email, userDto.Email);
+                    //set.SetProperty(u => u.UserName, userDto.UserName ?? null);
+                    set.SetProperty(e => e.Email, userDto.Email ?? null);
                 });
 
             return rows > 0 ? true : false;
@@ -92,22 +94,41 @@ namespace WebForum.Infrastructure.Repository
         {
             int rows = 0;
 
-            rows = await _dbSet.Where(u => u.Id == userId)
+            rows = await _dbSet.Where(u => u.Id == userId && u.IsDeleted == false)
                 .ExecuteUpdateAsync(u => u.SetProperty(h => h.PasswordHash, hash));
 
             return rows > 0 ? true : false;
         }
 
-        public async Task<UserDto> AddNewUser(RegistraitionUserDto dto)
-        {
-            await _dbSet.AddAsync(new User
-            {
-                UserName = dto.UserName,
-                Email = dto.Email,
-                PasswordHash = dto.Password,
-                IsDeleted = false
-            });
 
+        //TODO: объеденить в один метод UserExistByAsync
+        public async Task<bool> UserExistByNameAsync(string name)
+        {
+            return await _dbSet
+                .AsNoTracking()
+                .Where(u => u.UserName == name && u.IsDeleted == false)
+                .FirstOrDefaultAsync() != null;
+        }
+
+        public async Task<bool> UserExistByEmailAsync(string email)
+        {
+            return await _dbSet
+                .AsNoTracking()
+                .Where(u => u.Email == email && u.IsDeleted == false)
+                .FirstOrDefaultAsync() != null;
+        }
+
+        public async Task<LoginDto?> GetLoginDtoByNameAsync(string name)
+        {
+            return await _dbSet
+                .AsNoTracking()
+                .Where(u => u.UserName == name && u.IsDeleted == false)
+                .Select(u => new LoginDto 
+                {
+                    UserId = u.Id,
+                    PasswordHash = u.PasswordHash,
+                })
+                .FirstOrDefaultAsync();
         }
     }
 }

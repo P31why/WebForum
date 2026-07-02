@@ -7,9 +7,13 @@ namespace WebForum.Infrastructure.Interfaces
 {
     public interface IUserRepository : IBaseRepository<Guid, User>
     {
-        Task<UserDto> AddNewUser(RegistraitionUserDto dto);
-
         Task<UserDto?> GetDtoAsync(Guid userId);
+
+        Task<LoginDto?> GetLoginDtoByNameAsync(string name);
+
+        Task<bool> UserExistByNameAsync(string name);
+
+        Task<bool> UserExistByEmailAsync(string email);
 
         Task<UserShortDto?> GetShortDtoAsync(Guid userId);
 
