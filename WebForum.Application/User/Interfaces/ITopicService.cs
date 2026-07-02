@@ -1,11 +1,12 @@
 ﻿using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 
 namespace WebForum.Application.User.Interface
 {
 
     public interface ITopicService
     {
-        public Task<TopicDto> AddAsync(TopicDto topicDto);
+        public Task<TopicDto> AddAsync(CreateTopicRequestModel topicRequest);
 
         public Task<bool> UpdateAsync(TopicDto topicDto);
 

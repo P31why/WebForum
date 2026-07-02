@@ -1,21 +1,25 @@
 ﻿using WebForum.Application.User.Interface;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Infrastructure.Entities;
 using WebForum.Infrastructure.Interfaces;
 using WebForum.Infrastructure.Mappers;
 
 namespace WebForum.Application.User.Services
 {
-    public class TopicService(ITopicRepository topicRepository,
+    public class TopicService(ITopicRepository repository,
                               TopicMapper mapper) : ITopicService
     {
-        public async Task<TopicDto> AddAsync(TopicDto topicDto)
+        public async Task<TopicDto> AddAsync(CreateTopicRequestModel topicRequest)
         {
-            var entity = await topicRepository.CreateEntityAsync(mapper.DtoToEntity(topicDto));
+            if (await repository.GetSameNameTopic(topicRequest.Title))
+                throw new Exception("Error creating topic, same title");
 
-            bool isCreated = await topicRepository.CommitDbAsync();
+            var entity = await repository.CreateEntityAsync(mapper.RequestToEntity(topicRequest));
 
-            if (isCreated)
+            bool isCreated = await repository.CommitDbAsync();
+
+            if (!isCreated)
                 throw new Exception("Error creating topic");
 
             return mapper.EntityToDto(entity);
@@ -23,17 +27,17 @@ namespace WebForum.Application.User.Services
 
         public async Task<IReadOnlyCollection<TopicShortDto>> GetAllShortAsync(Guid? userId = null)
         {
-            return (await topicRepository.GetCollectionShortDtoAsync(userId)) ?? Array.Empty<TopicShortDto>();
+            return (await repository.GetCollectionShortDtoAsync(userId)) ?? Array.Empty<TopicShortDto>();
         }
 
         public async Task<TopicDto> GetByIdAsync(Guid id)
         {
-            return await topicRepository.GetDtoAsync(id);
+            return await repository.GetDtoAsync(id);
         }
 
         public async Task<bool> UpdateAsync(TopicDto topicDto)
         {
-            return await topicRepository.UpdateEntityAsync(topicDto);
+            return await repository.UpdateEntityAsync(topicDto);
         }
     }
 }
