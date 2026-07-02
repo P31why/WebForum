@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /WebForum/appsettings.Development.json
 /WebForum.Client/WebForum.Client.csproj
 /WebForum.Client
+/WebForum/Properties/launchSettings.json
