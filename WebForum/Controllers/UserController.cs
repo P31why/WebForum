@@ -1,21 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
 using WebForum.Application.User.Interfaces;
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 
 namespace WebForum.WebApi.Controllers
 {
     public class UserController(IUserService service) : BaseController
     {
         [HttpPost(nameof(AddAsync))]
-        public async Task<UserDto> AddAsync(UserDto dto)
+        public async Task<IResult> AddAsync(RegistraitionUserDto dto)
         {
-            return await service.AddAsync(dto);
+            return Results.Ok(await service.AddAsync(dto));
+        }
+
+        [HttpPost(nameof(Login))]
+        public async Task<IResult> Login(AuthModel authModel)
+        {
+            var token = await service.LoginUserAsync(authModel);
+
+            return Results.Ok(token);
         }
 
         [HttpGet(nameof(GetById))]
-        public async Task<UserDto> GetById(Guid userId)
+        public async Task<UserDto?> GetById(Guid userId)
         {
             return await service.GetByIdAsync(userId);
         }
@@ -26,6 +34,7 @@ namespace WebForum.WebApi.Controllers
             return await service.UpdateAsync(dto);
         }
 
+        [HttpPost(nameof(UpdatePassword))]
         public async Task<bool> UpdatePassword(Guid id, string password)
         {
             return await service.UpdatePasswordAsync(id, password);
