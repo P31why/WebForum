@@ -19,6 +19,6 @@ namespace WebForum.Infrastructure.Entities
 
         public required bool IsDeleted { get; set; }
 
-        public DateTime CreationDate { get; init; } = DateTime.Now;
+        public DateTime CreationDate { get; init; } = DateTime.UtcNow;
     }
 }
