@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using WebForum.Core;
 using WebForum.Data;
 using WebForum.Infrastructure.Interfaces;
@@ -36,10 +37,25 @@ namespace WebForum.Infrastructure.Repository
             int rows = 0;
 
             if (type == DeleteType.Full)
-                rows = await _dbSet.Where(e => EqualityComparer<TKey>.Default.Equals(EF.Property<TKey>(e,"Id"),tkey))
-                                                              .ExecuteDeleteAsync();
+            {
+                var parameter = Expression.Parameter(typeof(TEntity), "e");
 
-            return rows > 0 ;
+                var property = Expression.Call(
+                    typeof(EF),
+                    nameof(EF.Property),
+                    new[] { typeof(TKey) },
+                    parameter,
+                    Expression.Constant("Id")
+                );
+
+                var equals = Expression.Equal(property, Expression.Constant(tkey));
+
+                var lambda = Expression.Lambda<Func<TEntity, bool>>(equals, parameter);
+
+                rows = await _dbSet.Where(lambda).ExecuteDeleteAsync();
+            }
+
+            return rows > 0;
         }
     }
 }
