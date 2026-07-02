@@ -14,7 +14,7 @@
 
     public enum DeleteType
     {
-        NoVisible,
-        Full
+        NoVisible = 1,
+        Full = 2,
     }
 }
