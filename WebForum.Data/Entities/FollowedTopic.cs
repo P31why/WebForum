@@ -4,7 +4,6 @@ using WebForum.Data.Entities;
 
 namespace WebForum.Infrastructure.Entities
 {
-    [Table("FollowedTopics", Schema = "public")]
     public class FollowedTopic : IId<long>
     {
         public required long Id { get; set; }

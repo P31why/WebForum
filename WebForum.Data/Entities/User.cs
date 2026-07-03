@@ -1,10 +1,8 @@
 ﻿
-using System.ComponentModel.DataAnnotations.Schema;
 using WebForum.Infrastructure;
 
 namespace WebForum.Data.Entities
 {
-    [Table("Users", Schema = "public")]
     public class User : IId<Guid>
     {
         public Guid Id { get; set; } = Guid.NewGuid();

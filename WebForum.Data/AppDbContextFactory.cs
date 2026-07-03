@@ -20,9 +20,8 @@ namespace WebForum.Infrastructure
 
             var builder = new DbContextOptionsBuilder<AppDbContext>();
 
-            //builder.UseSqlServer(configuration.GetConnectionString("SqlServer"));
-            builder.UseNpgsql(configuration.GetConnectionString("PostgreSql"));
-
+            builder.UseSqlServer(configuration.GetConnectionString("SqlServer"));
+            
             return new AppDbContext(builder.Options);
         }
     }
