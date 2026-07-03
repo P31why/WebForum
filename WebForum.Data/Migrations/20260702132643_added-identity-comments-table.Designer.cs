@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebForum.Data;
 
 #nullable disable
@@ -12,8 +12,8 @@ using WebForum.Data;
 namespace WebForum.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260702231307_initpostgres")]
-    partial class initpostgres
+    [Migration("20260702132643_added-identity-comments-table")]
+    partial class addedidentitycommentstable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,36 +21,36 @@ namespace WebForum.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("WebForum.Data.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", "public");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("WebForum.Infrastructure.Entities.Comment", b =>
@@ -59,23 +59,23 @@ namespace WebForum.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("PostId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -83,7 +83,7 @@ namespace WebForum.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", "public");
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("WebForum.Infrastructure.Entities.FollowedTopic", b =>
@@ -92,13 +92,13 @@ namespace WebForum.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<Guid>("TopicId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -107,33 +107,33 @@ namespace WebForum.Infrastructure.Migrations
                     b.HasIndex("UserId", "TopicId")
                         .IsUnique();
 
-                    b.ToTable("FollowedTopics", "public");
+                    b.ToTable("FollowedTopic");
                 });
 
             modelBuilder.Entity("WebForum.Infrastructure.Entities.Post", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Text")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TopicId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -141,36 +141,36 @@ namespace WebForum.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", "public");
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("WebForum.Infrastructure.Entities.Topic", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Topics", "public");
+                    b.ToTable("Topics");
                 });
 
             modelBuilder.Entity("WebForum.Infrastructure.Entities.Comment", b =>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebForum.Data;
 
@@ -11,9 +12,11 @@ using WebForum.Data;
 namespace WebForum.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260608015325_added-table-followed_post")]
+    partial class addedtablefollowed_post
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,9 +63,6 @@ namespace WebForum.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
@@ -116,9 +116,6 @@ namespace WebForum.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -152,9 +149,6 @@ namespace WebForum.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()

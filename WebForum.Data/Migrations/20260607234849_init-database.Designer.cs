@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebForum.Data;
 
@@ -11,9 +12,11 @@ using WebForum.Data;
 namespace WebForum.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260607234849_init-database")]
+    partial class initdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,9 +64,6 @@ namespace WebForum.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
@@ -83,30 +83,6 @@ namespace WebForum.Infrastructure.Migrations
                     b.ToTable("Comment");
                 });
 
-            modelBuilder.Entity("WebForum.Infrastructure.Entities.FollowedTopic", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<Guid>("TopicId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TopicId");
-
-                    b.HasIndex("UserId", "TopicId")
-                        .IsUnique();
-
-                    b.ToTable("FollowedTopic");
-                });
-
             modelBuilder.Entity("WebForum.Infrastructure.Entities.Post", b =>
                 {
                     b.Property<Guid>("Id")
@@ -115,9 +91,6 @@ namespace WebForum.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -153,9 +126,6 @@ namespace WebForum.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -173,7 +143,7 @@ namespace WebForum.Infrastructure.Migrations
             modelBuilder.Entity("WebForum.Infrastructure.Entities.Comment", b =>
                 {
                     b.HasOne("WebForum.Infrastructure.Entities.Post", "Post")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -185,25 +155,6 @@ namespace WebForum.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WebForum.Infrastructure.Entities.FollowedTopic", b =>
-                {
-                    b.HasOne("WebForum.Infrastructure.Entities.Topic", "Topic")
-                        .WithMany()
-                        .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("WebForum.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Topic");
 
                     b.Navigation("User");
                 });
@@ -236,6 +187,11 @@ namespace WebForum.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("WebForum.Infrastructure.Entities.Post", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
