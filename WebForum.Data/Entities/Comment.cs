@@ -4,6 +4,7 @@ using WebForum.Data.Entities;
 
 namespace WebForum.Infrastructure.Entities
 {
+    [Table("Comments", Schema = "public")]
     public class Comment : IId<long>
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
