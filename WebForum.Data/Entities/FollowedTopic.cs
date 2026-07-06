@@ -18,5 +18,7 @@ namespace WebForum.Infrastructure.Entities
         
         [ForeignKey(nameof(UserId))]
         public User? User { get; set; }
+
+        public required bool IsDeleted { get; set; }
     }
 }

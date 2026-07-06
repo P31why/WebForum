@@ -24,7 +24,8 @@ namespace WebForum.Application
 
             var token = new JwtSecurityToken(
                 signingCredentials: creds,
-                expires: DateTime.UtcNow.AddMinutes(_options.ExpiresTime));
+                expires: DateTime.UtcNow.AddMinutes(_options.ExpiresTime),
+                claims: claims);
             
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

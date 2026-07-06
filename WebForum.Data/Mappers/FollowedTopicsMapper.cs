@@ -16,6 +16,7 @@ namespace WebForum.Infrastructure.Mappers
                 Id = dto.Id,
                 UserId = dto.UserId,
                 TopicId = dto.TopicId,
+                IsDeleted = dto.IsDeleted
             };
         }
 
@@ -27,6 +28,7 @@ namespace WebForum.Infrastructure.Mappers
                 Id = entity.Id,
                 UserId = entity.UserId,
                 TopicId = entity.TopicId,
+                IsDeleted = entity.IsDeleted
             };
         }
     }

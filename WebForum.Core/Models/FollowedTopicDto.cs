@@ -8,5 +8,7 @@ namespace WebForum.Core.Models
         public Guid UserId {  get; set; }
 
         public Guid TopicId { get; set; }
+
+        public required bool IsDeleted { get; set; }
     }
 }

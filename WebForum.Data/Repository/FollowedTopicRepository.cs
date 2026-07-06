@@ -23,20 +23,16 @@ namespace WebForum.Infrastructure.Repository
 
         public override async Task<bool> DeleteEntityAsync(long tkey, DeleteType type)
         {
-            /*int rows = 0;
-            bool isCompleted = false;
-
             if (DeleteType.NoVisible == type)
             {
-                rows = await _dbSet
+                return await _dbSet
                     .AsNoTracking()
                     .Where(ft => ft.Id == tkey)
                     .Select(ft => mapper.EntityToDto(ft))
-                    .ExecuteUpdateAsync(set => set.SetProperty(i => i.));
-            }*/
-            
+                    .ExecuteUpdateAsync(set => set.SetProperty(i => i.IsDeleted, true)) > 0;
+            }
+
             return await base.DeleteEntityAsync(tkey, type);
-            //TODO: add IsDeleted
         }
     }
 }

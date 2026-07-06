@@ -24,7 +24,6 @@ namespace WebForum.WebApi.Controllers
         [HttpDelete(nameof(DeleteAsync))]
         public async Task<bool> DeleteAsync(Guid? userId, DeleteType type, long followTopicId)
         {
-            // TODO: second delete variant
             return await service.DeleteAsync(followTopicId, type);
         }
 }

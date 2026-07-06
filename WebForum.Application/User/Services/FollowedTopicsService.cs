@@ -22,9 +22,8 @@ namespace WebForum.Application.User.Services
             return mapper.EntityToDto(entity);
         }
 
-        public async Task<bool> DeleteAsync(long id, DeleteType type = DeleteType.Full)
+        public async Task<bool> DeleteAsync(long id, DeleteType type)
         {
-            // TODO: second delete variant
             return await repository.DeleteEntityAsync(id, type);
         }
 
