@@ -8,5 +8,7 @@ namespace WebForum.Core.RequestModels
         public required Guid PostId { get; set; }
 
         public required string Text { get; set; }
+
+        public string? ImageUrl { get; set; }
     }
 }

@@ -26,6 +26,8 @@ namespace WebForum.Infrastructure.Entities
 
         public required bool IsDeleted { get; set; }
 
+        public string? ImageUrl { get; set; }
+
         public DateTime CreationDate { get; init; } = DateTime.Now;
     }
 }

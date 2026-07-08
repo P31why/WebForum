@@ -4,6 +4,8 @@ namespace WebForum.Core.Models
     public class PostDto : PostShortDto
     {
         public string? Text { get; set; }
+
+        public string? ImageUrl { get; set; }
     }
 
     public class PostShortDto

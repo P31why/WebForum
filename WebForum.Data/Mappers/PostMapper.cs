@@ -24,6 +24,8 @@ namespace WebForum.Mapper
 
                 Text = dto.Text,
 
+                ImageUrl = dto.ImageUrl,
+
                 IsDeleted = false,
 
                 CreationDate = dto.CreationDate,
@@ -43,6 +45,8 @@ namespace WebForum.Mapper
                 Title = entity.Title,
 
                 Text = entity.Text,
+
+                ImageUrl = entity.ImageUrl,
 
                 IsDeleted = entity.IsDeleted,
 
@@ -79,6 +83,7 @@ namespace WebForum.Mapper
                 TopicId = requestModel.TopicId,
                 Title = requestModel.Title,
                 Text = requestModel.Text,
+                ImageUrl = requestModel.ImageUrl ?? null,
                 IsDeleted = false,
                 CreationDate = DateTime.UtcNow
             };

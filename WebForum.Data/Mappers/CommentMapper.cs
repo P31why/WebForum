@@ -24,6 +24,8 @@ namespace WebForum.Infrastructure.Mappers
 
                 IsDeleted = dto.IsDeleted,
 
+                ImageUrl = dto.ImageUrl,
+
                 CreationDate = dto.CreationDate
             };
         }
@@ -41,6 +43,8 @@ namespace WebForum.Infrastructure.Mappers
 
                 Text = entity.Text,
 
+                ImageUrl= entity.ImageUrl,
+
                 IsDeleted = entity.IsDeleted,
 
                 CreationDate = entity.CreationDate,
@@ -55,6 +59,7 @@ namespace WebForum.Infrastructure.Mappers
                 UserId = requestModel.UserId,
                 PostId = requestModel.PostId,
                 Text = requestModel.Text,
+                ImageUrl = requestModel.ImageUrl,
                 IsDeleted = false,
                 CreationDate = DateTime.UtcNow
             };

@@ -9,6 +9,8 @@ namespace WebForum.Core.RequestModels
 
         public required string Title { get; set; }
 
+        public string? ImageUrl { get; set; }
+
         public string? Text{ get; set; }
     }
 }
