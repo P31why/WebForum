@@ -14,9 +14,10 @@ namespace WebForum.WebApi.Controllers
         public async Task<TopicDto> AddAsync(CreateTopicRequestModel topic)
         {
             return await service.AddAsync(topic);
-        }  
+        }
 
         //TODO: решить как авторизовывать
+        [Authorize]
         [HttpGet(nameof(GetAllAsync))]
         public async Task<IReadOnlyCollection<TopicShortDto>> GetAllAsync(Guid userId)
         {
@@ -37,7 +38,7 @@ namespace WebForum.WebApi.Controllers
 
         [Authorize]
         [HttpPost(nameof(UpdateAsync))]
-        public async Task<bool> UpdateAsync(TopicDto dto)
+        public async Task<bool> UpdateAsync(UpdateTopicRequestModel dto)
         {
             return await service.UpdateAsync(dto);
         }

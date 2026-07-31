@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Data;
 using WebForum.Infrastructure.Entities;
 using WebForum.Infrastructure.Interfaces;
@@ -84,7 +85,7 @@ namespace WebForum.Infrastructure.Repository
             return topic;
         }
 
-        public async Task<bool> UpdateEntityAsync(TopicDto topicDto)
+        public async Task<bool> UpdateEntityAsync(UpdateTopicRequestModel topicDto)
         {
             return await _dbSet
                 .Where(t => t.Id == topicDto.Id && t.IsDeleted == false)

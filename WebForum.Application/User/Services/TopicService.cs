@@ -41,7 +41,7 @@ namespace WebForum.Application.User.Services
             return await repository.GetDtoAsync(id);
         }
 
-        public async Task<bool> UpdateAsync(TopicDto topicDto)
+        public async Task<bool> UpdateAsync(UpdateTopicRequestModel topicDto)
         {
             return await repository.UpdateEntityAsync(topicDto);
         }
