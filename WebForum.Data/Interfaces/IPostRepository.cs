@@ -1,12 +1,13 @@
 ﻿using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Infrastructure.Entities;
 
 namespace WebForum.Infrastructure.Interfaces
 {
     public interface IPostRepository : IBaseRepository<Guid,Post>
     {
-        public Task<bool> UpdateEntityAsync(PostDto postDto);
+        public Task<bool> UpdateEntityAsync(UpdatePostRequestModel postDto);
 
         public Task<PostDto> GetDtoAsync(Guid postId);
 

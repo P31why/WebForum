@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Data;
 using WebForum.Infrastructure.Entities;
 using WebForum.Infrastructure.Interfaces;
@@ -63,7 +64,7 @@ namespace WebForum.Infrastructure.Repository
                 .FirstOrDefaultAsync() ?? throw new Exception("Post is not exist");
         }
 
-        public async Task<bool> UpdateEntityAsync(PostDto postDto)
+        public async Task<bool> UpdateEntityAsync(UpdatePostRequestModel postDto)
         {
             int rows = 0;
             rows= await _dbSet

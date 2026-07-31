@@ -27,7 +27,7 @@ namespace WebForum.WebApi.Controllers
         }
 
         [HttpPost(nameof(UpdateAsync))]
-        public async Task<bool> UpdateAsync(PostDto dto)
+        public async Task<bool> UpdateAsync(UpdatePostRequestModel dto)
         {
             return await service.UpdatePostAsync(dto);
         }
