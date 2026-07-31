@@ -21,7 +21,7 @@ namespace WebForum.WebApi.Controllers
         }
 
         [HttpPost(nameof(UpdateAync))]
-        public async Task<bool> UpdateAync(CommentDto commentDto)
+        public async Task<bool> UpdateAync(UpdateCommentRequestModel commentDto)
         {
             return await service.UpdateAsync(commentDto);
         }

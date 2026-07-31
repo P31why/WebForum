@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Data;
 using WebForum.Infrastructure.Entities;
 using WebForum.Infrastructure.Interfaces;
@@ -36,7 +37,7 @@ namespace WebForum.Infrastructure.Repository
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> UpdateEntityAsync(CommentDto commentDto)
+        public async Task<bool> UpdateEntityAsync(UpdateCommentRequestModel commentDto)
         {
             int rows = 0;
             rows = await _dbSet
@@ -46,6 +47,7 @@ namespace WebForum.Infrastructure.Repository
                 .ExecuteUpdateAsync(set =>
                 {
                     set.SetProperty(i => i.Text, commentDto.Text);
+                    set.SetProperty(i => i.ImageUrl, commentDto.ImageUrl);
                     set.SetProperty(i => i.CreationDate, DateTime.UtcNow);
                 });
 

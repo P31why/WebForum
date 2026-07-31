@@ -11,7 +11,7 @@ namespace WebForum.Application.User.Interfaces
 
         public Task<CommentDto> AddAsync(CreateCommentRequestModel requestModel);
 
-        public Task<bool> UpdateAsync(CommentDto dto);
+        public Task<bool> UpdateAsync(UpdateCommentRequestModel dto);
 
         public Task<bool> DeleteAsync(long id, DeleteType type);
     }
