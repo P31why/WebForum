@@ -31,7 +31,7 @@ namespace WebForum.WebApi.Controllers
 
         [Authorize]
         [HttpPost(nameof(UpdateAsync))]
-        public async Task<bool> UpdateAsync(UserDto dto)
+        public async Task<bool> UpdateAsync(UpdateUserRequestModel dto)
         {
             return await service.UpdateAsync(dto);
         }

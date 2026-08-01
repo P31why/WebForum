@@ -13,7 +13,7 @@ namespace WebForum.Application.User.Interfaces
 
         public Task<string> LoginUserAsync(AuthModel model);
 
-        public Task<bool> UpdateAsync(UserDto dto);
+        public Task<bool> UpdateAsync(UpdateUserRequestModel dto);
 
         public Task<bool> UpdatePasswordAsync(Guid id, string newPawssword);
 

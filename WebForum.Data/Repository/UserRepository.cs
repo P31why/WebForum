@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Data;
 using WebForum.Data.Entities;
 using WebForum.Infrastructure.Interfaces;
@@ -68,7 +69,7 @@ namespace WebForum.Infrastructure.Repository
                 .ToArrayAsync();
         }
 
-        public async Task<bool> UpdateUserEntityAsync(UserDto userDto, UserModelType type)
+        public async Task<bool> UpdateUserEntityAsync(UpdateUserRequestModel userDto, UserModelType type)
         {
             int rows = 0;
 

@@ -1,6 +1,7 @@
 ﻿
 using WebForum.Core;
 using WebForum.Core.Models;
+using WebForum.Core.RequestModels;
 using WebForum.Data.Entities;
 
 namespace WebForum.Infrastructure.Interfaces
@@ -21,7 +22,7 @@ namespace WebForum.Infrastructure.Interfaces
         
         Task<IReadOnlyCollection<UserShortDto>?> GetCollectionShortDtoAsync();
         
-        Task<bool> UpdateUserEntityAsync(UserDto userDto, UserModelType type);
+        Task<bool> UpdateUserEntityAsync(UpdateUserRequestModel userDto, UserModelType type);
 
         Task<bool> UpdateUserPasswordAsync(Guid userId, string hash);
     }
