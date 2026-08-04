@@ -8,29 +8,48 @@ namespace WebForum.WebApi.Controllers
 {
     public class CommentController(ICommentService service) : BaseController
     {
-        [HttpGet(nameof(GetAllAsync))]
-        public async Task<IReadOnlyCollection<CommentDto>> GetAllAsync(Guid id, IdType type)
+        [HttpGet("comments")]
+        public async Task<IActionResult> GetAllAsync(Guid id, IdType type)
         {
-            return await service.GetAllAsync(id, type);
+            IReadOnlyCollection<CommentDto> models= await service.GetAllAsync(id, type);
+
+            if (models == null)
+                return NotFound();
+
+            return Ok(models);
         }
 
         [HttpPost(nameof(AddAsync))]
-        public async Task<CommentDto> AddAsync(CreateCommentRequestModel commentDto)
+        public async Task<IActionResult> AddAsync(CreateCommentRequestModel commentDto)
         {
-            return await service.AddAsync(commentDto);
+            CommentDto model = await service.AddAsync(commentDto);
+
+            if(model == null)
+                return NotFound();
+
+            return Ok(model);
         }
 
         [HttpPost(nameof(UpdateAync))]
-        public async Task<bool> UpdateAync(UpdateCommentRequestModel commentDto)
+        public async Task<IActionResult> UpdateAync(UpdateCommentRequestModel commentDto)
         {
-            return await service.UpdateAsync(commentDto);
+            bool isUpdated = await service.UpdateAsync(commentDto);
+
+            if(!isUpdated)
+                return NotFound();
+
+            return Ok();
         }
 
         [HttpDelete(nameof(DeleteAsync))]
-        public async Task<bool> DeleteAsync(long id)
+        public async Task<IActionResult> DeleteAsync(long id)
         {
-            //TODO: second variant deleting
-            return await service.DeleteAsync(id, DeleteType.Full);
+            bool isDeleted = await service.DeleteAsync(id, DeleteType.Full);
+
+            if(!isDeleted)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }
