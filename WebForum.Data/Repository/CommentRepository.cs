@@ -53,5 +53,16 @@ namespace WebForum.Infrastructure.Repository
 
             return rows > 0 ;
         }
+
+        public override async Task<bool> DeleteEntityAsync(long tkey, DeleteType type)
+        {
+            if (DeleteType.NoVisible == type)
+                return await _dbSet.Where(c => c.Id == tkey)
+                    .ExecuteUpdateAsync(set => set.SetProperty(i => i.IsDeleted, true)) > 0;
+            else
+                return await base.DeleteEntityAsync(tkey, type);
+            
+
+        }
     }
 }
