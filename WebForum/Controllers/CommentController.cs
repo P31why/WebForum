@@ -8,6 +8,12 @@ namespace WebForum.WebApi.Controllers
 {
     public class CommentController(ICommentService service) : BaseController
     {
+        [HttpGet("comments/{id}")]
+        public async Task<IActionResult> GetByIdAsync(long id)
+        {
+            var model = 
+        }
+
         [HttpGet("comments")]
         public async Task<IActionResult> GetAllAsync(Guid id, IdType type)
         {
@@ -19,7 +25,7 @@ namespace WebForum.WebApi.Controllers
             return Ok(models);
         }
 
-        [HttpPost(nameof(AddAsync))]
+        [HttpPost("comments")]
         public async Task<IActionResult> AddAsync(CreateCommentRequestModel commentDto)
         {
             CommentDto model = await service.AddAsync(commentDto);
@@ -27,10 +33,10 @@ namespace WebForum.WebApi.Controllers
             if(model == null)
                 return NotFound();
 
-            return Ok(model);
+            return CreatedAtAction(model);
         }
 
-        [HttpPost(nameof(UpdateAync))]
+        [HttpPatch("comments")]
         public async Task<IActionResult> UpdateAync(UpdateCommentRequestModel commentDto)
         {
             bool isUpdated = await service.UpdateAsync(commentDto);
@@ -41,7 +47,7 @@ namespace WebForum.WebApi.Controllers
             return Ok();
         }
 
-        [HttpDelete(nameof(DeleteAsync))]
+        [HttpDelete("comments")]
         public async Task<IActionResult> DeleteAsync(long id)
         {
             bool isDeleted = await service.DeleteAsync(id, DeleteType.Full);

@@ -9,22 +9,48 @@ namespace WebForum.WebApi.Controllers
     [Authorize]
     public class FollowedTopicController(IFollowedTopicService service) : BaseController
     {
-        [HttpPost(nameof(AddAsync))]
-        public async Task<FollowedTopicDto> AddAsync(FollowedTopicDto dto)
+        [HttpPost("follwed-topics")]
+        public async Task<IActionResult> AddAsync(FollowedTopicDto dto)
         {
-            return await service.AddAsync(dto);
+            var model = await service.AddUserFollowedTopicAsync(dto);
+
+            if(model == null)
+                return NotFound();
+
+            return CreatedAtAction(nameof(GetByIdAsync),model);
         }
 
-        [HttpGet(nameof(GetAll))]
-        public async Task<IReadOnlyCollection<FollowedTopicDto>> GetAll(Guid userId)
+        [HttpGet("follwed-topics/{id}")]
+        public async Task<IActionResult> GetByIdAsync(long id)
         {
-            return await service.GetAllFollowedTopicsAsync(userId);
+            var model = service.GetUserFollowedTopicByIdAsync(id);
+
+            if (model == null)
+                return NotFound();
+
+            return Ok(model);
         }
 
-        [HttpDelete(nameof(DeleteAsync))]
-        public async Task<bool> DeleteAsync(Guid? userId, DeleteType type, long followTopicId)
+        [HttpGet("follwed-topics")]
+        public async Task<IActionResult> GetAllAsync(Guid userId)
         {
-            return await service.DeleteAsync(followTopicId, type);
+            var models = await service.GetUserFollowedTopicsAsync(userId);
+            
+            if (models == null)
+                return NotFound();
+
+            return Ok(models);
+        }
+
+        [HttpDelete("follwed-topics")]
+        public async Task<IActionResult> DeleteAsync(Guid? userId, DeleteType type, long followTopicId)
+        {
+            var isDeleted = await service.DeleteUserFollowedTopicAsync(followTopicId, type);
+
+            if (isDeleted)
+                return NotFound();
+
+            return Ok();
         }
 }
 }
