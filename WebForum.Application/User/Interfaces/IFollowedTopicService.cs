@@ -6,10 +6,12 @@ namespace WebForum.Application.User.Interfaces
 {
     public interface IFollowedTopicService
     {
-        public Task<IReadOnlyCollection<FollowedTopicDto>> GetAllFollowedTopicsAsync(Guid userId);
+        public Task<FollowedTopicDto?> GetUserFollowedTopicByIdAsync(long id);
 
-        public Task<FollowedTopicDto> AddAsync(FollowedTopicDto dto);
+        public Task<IReadOnlyCollection<FollowedTopicDto>> GetUserFollowedTopicsAsync(Guid userId);
 
-        public Task<bool> DeleteAsync(long Id, DeleteType type);
+        public Task<FollowedTopicDto> AddUserFollowedTopicAsync(FollowedTopicDto dto);
+
+        public Task<bool> DeleteUserFollowedTopicAsync(long Id, DeleteType type);
     }
 }

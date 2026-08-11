@@ -12,13 +12,22 @@ namespace WebForum.Infrastructure.Repository
     public class FollowedTopicRepository(AppDbContext dbContext,
                                         FollowedTopicsMapper mapper) : BaseRepository<long, FollowedTopic>(dbContext), IFollowedTopicRepository
     {
+        public async Task<FollowedTopicDto?> GetByIdAsync(long id)
+        {
+            return await _dbSet
+                .AsNoTracking()
+                .Where(ft => ft.Id == id)
+                .Select(i => mapper.EntityToDto(i))
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IReadOnlyCollection<FollowedTopicDto>?> GetAllAsync(Guid userId)
         {
-            return (await _dbSet
+            return await _dbSet
                 .AsNoTracking()
                 .Where(ft => ft.UserId == userId)
                 .Select(i => mapper.EntityToDto(i))
-                .ToListAsync());
+                .ToListAsync();
         }
 
         public override async Task<bool> DeleteEntityAsync(long tkey, DeleteType type)

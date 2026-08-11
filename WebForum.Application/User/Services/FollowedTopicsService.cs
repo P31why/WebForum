@@ -10,7 +10,7 @@ namespace WebForum.Application.User.Services
     public class FollowedTopicsService(IFollowedTopicRepository repository,
                                        FollowedTopicsMapper mapper) : IFollowedTopicService
     {
-        public async Task<FollowedTopicDto> AddAsync(FollowedTopicDto dto)
+        public async Task<FollowedTopicDto> AddUserFollowedTopicAsync(FollowedTopicDto dto)
         {
             var entity = await repository.CreateEntityAsync(mapper.DtoToEntity(dto));
 
@@ -22,12 +22,17 @@ namespace WebForum.Application.User.Services
             return mapper.EntityToDto(entity);
         }
 
-        public async Task<bool> DeleteAsync(long id, DeleteType type)
+        public async Task<bool> DeleteUserFollowedTopicAsync(long id, DeleteType type)
         {
             return await repository.DeleteEntityAsync(id, type);
         }
 
-        public async Task<IReadOnlyCollection<FollowedTopicDto>> GetAllFollowedTopicsAsync(Guid userId)
+        public async Task<FollowedTopicDto?> GetUserFollowedTopicByIdAsync(long id)
+        {
+            return await repository.GetByIdAsync(id);
+        }
+
+        public async Task<IReadOnlyCollection<FollowedTopicDto>> GetUserFollowedTopicsAsync(Guid userId)
         {
             return await repository.GetAllAsync(userId) ?? Array.Empty<FollowedTopicDto>();
         }

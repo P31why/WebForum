@@ -6,6 +6,7 @@ namespace WebForum.Infrastructure.Interfaces
 {
     public interface IFollowedTopicRepository : IBaseRepository<long, FollowedTopic>
     {
+        public Task<FollowedTopicDto?> GetByIdAsync(long id);
         public Task<IReadOnlyCollection<FollowedTopicDto>?> GetAllAsync(Guid userId);
     }
 }
