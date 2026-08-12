@@ -11,7 +11,12 @@ namespace WebForum.WebApi.Controllers
         [HttpGet("comments/{id}")]
         public async Task<IActionResult> GetByIdAsync(long id)
         {
-            var model = 
+            var model = service.GetByIdAsync(id);
+
+            if (model == null)
+                return NotFound();
+
+            return Ok(model);
         }
 
         [HttpGet("comments")]
@@ -33,7 +38,7 @@ namespace WebForum.WebApi.Controllers
             if(model == null)
                 return NotFound();
 
-            return CreatedAtAction(model);
+            return CreatedAtAction(nameof(GetByIdAsync), model);
         }
 
         [HttpPatch("comments")]
