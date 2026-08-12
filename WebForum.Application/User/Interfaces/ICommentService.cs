@@ -9,6 +9,8 @@ namespace WebForum.Application.User.Interfaces
     {
         public Task<IReadOnlyCollection<CommentDto>> GetAllAsync(Guid postId, IdType type);
 
+        public Task<CommentDto?> GetByIdAsync(long id);
+
         public Task<CommentDto> AddAsync(CreateCommentRequestModel requestModel);
 
         public Task<bool> UpdateAsync(UpdateCommentRequestModel dto);
